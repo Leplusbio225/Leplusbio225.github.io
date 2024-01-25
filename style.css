@@ -1,0 +1,127 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* #102042 for dark theme*/
+
+body{
+    display: flex;
+    background-color: #9CB4E7;
+}
+
+div.side-info, nav, aside{
+    box-shadow: 2px 2px 3px #000;
+}
+
+div.side-info h4, a, aside h4{
+    color : #fff;
+    transition: color .3s;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* Profil info */
+div.side-info{
+    top: 0;
+    float: left;
+    height: 1000px;
+    /* overflow-y: scroll; */
+    padding: 10px;
+    width: 200px;
+    position: sticky;
+    border: 1px solid black;
+    margin-right: 0.5%;
+    background-color: #1C3973;
+}
+
+div.side-info button{
+    margin-left: 30px;
+}
+
+.profil-img img{
+    height: 150px;
+    width: 150px;
+    margin-top: 20px;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 1px 1px 3px black;
+}
+
+p{
+    color: #fff;
+}
+
+nav{
+    flex: 2;
+    margin-right: 0.5%;
+    border: 1px solid black;
+}
+
+nav ul {
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-around;
+}
+
+ul li{
+    list-style: none;
+}
+
+ul li button, button{
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color .5s;
+    box-shadow: 1px 1px 2px black,
+                2px 2px 3px #000;
+    background-color: #8CA8E3;
+
+}
+
+ul li button:hover{
+    background-color: #1C3973;
+}
+
+ul li a {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+button#whoami-btn{
+    background-color: #1C3973;
+}
+
+/* Whoami section */
+
+div.whoami{
+    margin-top: 50px;
+    text-align: center;
+}
+
+/* Aside modifications */
+
+aside{
+    flex:1;
+    border: 1px solid black;
+    background-color: #1C3973;
+}
+
+aside div{
+    top: -10px;
+    left: 80%;
+    position: absolute;
+    transform: translateY(50%);
+}
+
+aside div h2 {
+    color: #fff;
+    text-align: center;
+    transition: border-bottom .2s;
+    text-shadow: 1px 1px 3px #000,
+                 2px 2px 3px #fff;
+}
+
