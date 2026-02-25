@@ -1,874 +1,473 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>manouthenerd — KACOU EMMANUEL</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-/* ════════════════════════════════════════════════
-   RESET & ROOT
-════════════════════════════════════════════════ */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>manouthenerd — KACOU EMMANUEL</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <canvas id="canvas"></canvas>
 
-:root {
-  --bg:           #0a0612;
-  --accent:       #7b5cf5;
-  --accent2:      #4f8ef7;
-  --accent3:      #a78bfa;
-  --glow:         #6d28d9;
-  --glass:        rgba(123,92,245,0.06);
-  --glass-border: rgba(123,92,245,0.18);
-  --glass-hover:  rgba(123,92,245,0.12);
-  --text:         #e8e3ff;
-  --muted:        #9b91c4;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Syne', sans-serif;
-  overflow-x: hidden;
-  -webkit-text-size-adjust: 100%;
-}
-
-img, canvas { max-width: 100%; }
-
-/* ════════════════════════════════════════════════
-   BACKGROUND EFFECTS
-════════════════════════════════════════════════ */
-#canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
-
-body::before {
-  content:''; position:fixed; inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none; z-index:1; opacity:.3;
-}
-
-.orb {
-  position:fixed; border-radius:50%; filter:blur(80px);
-  pointer-events:none; z-index:2; opacity:.18;
-  animation:orbFloat 14s ease-in-out infinite;
-}
-/* Orbs scaled down on mobile */
-.orb-1 { width:260px;height:260px; background:radial-gradient(circle,rgba(109,40,217,.7),transparent); top:-80px;left:-60px; }
-.orb-2 { width:220px;height:220px; background:radial-gradient(circle,rgba(79,142,247,.6),transparent); bottom:15%;right:-60px; animation-delay:-7s; }
-.orb-3 { width:180px;height:180px; background:radial-gradient(circle,rgba(123,92,245,.5),transparent); top:60%;left:30%; animation-delay:-3.5s; }
-
-@keyframes orbFloat {
-  0%,100%{transform:translate(0,0) scale(1);}
-  33%{transform:translate(15px,-20px) scale(1.05);}
-  66%{transform:translate(-10px,12px) scale(.96);}
-}
-
-/* ════════════════════════════════════════════════
-   LAYOUT
-════════════════════════════════════════════════ */
-.container {
-  width:100%; max-width:1100px;
-  margin:0 auto;
-  padding:0 16px;
-  position:relative; z-index:10;
-}
-
-/* ════════════════════════════════════════════════
-   NAV — mobile hamburger
-════════════════════════════════════════════════ */
-nav {
-  position:fixed; top:0;left:0;right:0; z-index:100;
-  background:rgba(10,6,18,.8);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--glass-border);
-}
-nav .inner {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:14px 16px;
-}
-.logo {
-  font-family:'Orbitron',monospace; font-weight:900; font-size:1.1rem;
-  letter-spacing:-.02em;
-  background:linear-gradient(135deg,var(--accent3),var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  text-decoration:none; flex-shrink:0;
-}
-
-/* Hamburger button */
-.nav-toggle {
-  display:flex; flex-direction:column; justify-content:space-between;
-  width:24px; height:18px; background:none; border:none; cursor:pointer; padding:0; z-index:101;
-}
-.nav-toggle span {
-  display:block; height:2px; background:var(--accent3); border-radius:2px;
-  transition:transform .3s, opacity .3s;
-}
-.nav-toggle.open span:nth-child(1) { transform:translateY(8px) rotate(45deg); }
-.nav-toggle.open span:nth-child(2) { opacity:0; }
-.nav-toggle.open span:nth-child(3) { transform:translateY(-8px) rotate(-45deg); }
-
-/* Mobile nav dropdown */
-.nav-links {
-  display:none; flex-direction:column; gap:0; list-style:none;
-  background:rgba(10,6,18,.95); border-top:1px solid var(--glass-border);
-  padding:8px 0;
-}
-.nav-links.open { display:flex; }
-.nav-links li a {
-  display:block; padding:14px 20px;
-  font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--muted);
-  text-decoration:none; letter-spacing:.08em; text-transform:uppercase;
-  transition:color .2s, background .2s;
-}
-.nav-links li a:hover { color:var(--accent3); background:rgba(123,92,245,.08); }
-
-/* ════════════════════════════════════════════════
-   GLASS CARD
-════════════════════════════════════════════════ */
-.glass {
-  background:var(--glass); border:1px solid var(--glass-border);
-  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
-  border-radius:16px;
-  transition:background .3s, border-color .3s;
-}
-.glass:hover { background:var(--glass-hover); border-color:rgba(123,92,245,.35); }
-
-/* ════════════════════════════════════════════════
-   SECTIONS — mobile base
-════════════════════════════════════════════════ */
-section { padding:70px 0; }
-
-/* ════════════════════════════════════════════════
-   SECTION HEADER
-════════════════════════════════════════════════ */
-.section-tag {
-  font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--accent3);
-  text-transform:uppercase; letter-spacing:.15em;
-  display:flex; align-items:center; gap:10px; margin-bottom:10px;
-}
-.section-tag::before {
-  content:''; width:24px; height:1px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  flex-shrink:0;
-}
-.section-title {
-  font-size:1.9rem; font-weight:800; letter-spacing:-.03em;
-  margin-bottom:12px; line-height:1.1;
-}
-.section-subtitle {
-  font-size:.95rem; color:var(--muted); line-height:1.7; margin-bottom:40px;
-}
-
-/* ════════════════════════════════════════════════
-   HERO — mobile first
-════════════════════════════════════════════════ */
-#hero {
-  min-height:100svh; display:flex; align-items:center;
-  padding-top:80px; padding-bottom:40px;
-}
-.hero-content {
-  display:flex; flex-direction:column; gap:36px;
-}
-
-.hero-badge {
-  display:inline-flex; align-items:center; gap:8px;
-  font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--accent3);
-  letter-spacing:.1em; text-transform:uppercase; padding:5px 14px;
-  border:1px solid rgba(167,139,250,.3); border-radius:100px;
-  background:rgba(123,92,245,.08); margin-bottom:16px; width:fit-content;
-}
-.hero-badge::before {
-  content:''; width:6px;height:6px; background:#4ade80;
-  border-radius:50%; flex-shrink:0; animation:pulse 2s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
-
-.hero-name {
-  font-size:clamp(2.4rem,10vw,4.2rem); font-weight:800;
-  line-height:1.05; letter-spacing:-.03em; margin-bottom:8px;
-}
-.hero-name span {
-  background:linear-gradient(135deg,#fff 20%,var(--accent3) 60%,var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.hero-title {
-  font-family:'JetBrains Mono',monospace; font-size:.88rem; color:var(--accent3);
-  margin-bottom:16px; letter-spacing:.02em;
-}
-.hero-desc {
-  font-size:.95rem; color:var(--muted); line-height:1.7; margin-bottom:28px;
-}
-.hero-desc strong { color:var(--accent3); }
-.hero-cta { display:flex; flex-wrap:wrap; gap:12px; }
-
-.btn {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:12px 22px; border-radius:12px;
-  font-family:'Syne',sans-serif; font-size:.88rem; font-weight:600;
-  text-decoration:none; transition:all .3s; white-space:nowrap;
-}
-.btn-primary {
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#fff; border:1px solid transparent;
-}
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(123,92,245,.4); }
-.btn-ghost {
-  background:var(--glass); color:var(--text);
-  border:1px solid var(--glass-border); backdrop-filter:blur(12px);
-}
-.btn-ghost:hover { background:var(--glass-hover); border-color:var(--accent); color:var(--accent3); transform:translateY(-2px); }
-
-/* Hero card */
-.hero-card { padding:24px; position:relative; overflow:hidden; }
-.hero-card::before {
-  content:''; position:absolute; top:-50%;left:-50%; width:200%;height:200%;
-  background:radial-gradient(circle at 60% 40%,rgba(123,92,245,.1),transparent 60%);
-  pointer-events:none;
-}
-.flag-emoji { font-size:2.2rem; margin-bottom:6px; display:block; text-align:center; }
-.hero-location { text-align:center; margin-bottom:16px; }
-.hero-location span { font-family:'Orbitron',monospace; font-size:.8rem; color:var(--muted); }
-.hero-location div { font-weight:700; font-size:1rem; margin-top:3px; }
-
-.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.stat-item {
-  padding:14px 10px; background:rgba(123,92,245,.07);
-  border:1px solid var(--glass-border); border-radius:12px; text-align:center;
-}
-.stat-num {
-  font-family:'Orbitron',monospace; font-size:1.4rem; font-weight:700;
-  background:linear-gradient(135deg,var(--accent3),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block;
-}
-.stat-label {
-  font-family:'JetBrains Mono',monospace; font-size:.6rem;
-  color:var(--muted); text-transform:uppercase; letter-spacing:.06em;
-}
-.motto-text {
-  font-family:'JetBrains Mono',monospace; font-size:.75rem; color:var(--muted);
-  text-align:center; margin-top:16px; padding-top:16px;
-  border-top:1px solid var(--glass-border); line-height:1.7;
-}
-.motto-text strong { color:var(--accent3); }
-
-/* ════════════════════════════════════════════════
-   PROJECT STATUS BADGES
-════════════════════════════════════════════════ */
-.project-status {
-  display:inline-flex; align-items:center; gap:5px;
-  font-family:'JetBrains Mono',monospace; font-size:.62rem;
-  letter-spacing:.07em; text-transform:uppercase;
-  padding:4px 10px; border-radius:100px; font-weight:500; margin-bottom:12px;
-}
-.project-status::before { content:''; width:5px;height:5px; border-radius:50%; flex-shrink:0; }
-.status-wip   { background:rgba(251,146,60,.12); border:1px solid rgba(251,146,60,.35); color:#fb923c; }
-.status-wip::before   { background:#fb923c; animation:pulse 1.8s infinite; }
-.status-live  { background:rgba(74,222,128,.1);  border:1px solid rgba(74,222,128,.35); color:#4ade80; }
-.status-live::before  { background:#4ade80; }
-.status-concept{ background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3); color:var(--accent3); }
-.status-concept::before{ background:var(--accent3); opacity:.7; }
-
-/* ════════════════════════════════════════════════
-   PROJECTS — mobile first: 1 col
-════════════════════════════════════════════════ */
-.projects-grid { display:grid; grid-template-columns:1fr; gap:16px; }
-.project-card  { padding:24px; position:relative; overflow:hidden; }
-.project-card::after {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg,transparent 60%,rgba(123,92,245,.04));
-  pointer-events:none;
-}
-.project-accent { width:36px;height:3px; border-radius:100px; margin-bottom:14px; }
-.project-title  { font-size:1.1rem; font-weight:700; margin-bottom:8px; letter-spacing:-.01em; }
-.project-desc   { font-size:.86rem; color:var(--muted); line-height:1.65; margin-bottom:16px; }
-.project-tags   { display:flex; flex-wrap:wrap; gap:6px; }
-.tag {
-  font-family:'JetBrains Mono',monospace; font-size:.64rem; padding:3px 9px;
-  border-radius:6px; background:rgba(123,92,245,.08);
-  border:1px solid var(--glass-border); color:var(--muted); letter-spacing:.03em;
-}
-
-/* SITES */
-.sites-grid { display:flex; flex-wrap:wrap; gap:10px; margin-top:32px; }
-.site-link {
-  display:inline-flex; align-items:center; gap:6px; padding:9px 16px;
-  background:var(--glass); border:1px solid var(--glass-border); border-radius:10px;
-  color:var(--muted); text-decoration:none; font-family:'JetBrains Mono',monospace;
-  font-size:.74rem; transition:all .3s; backdrop-filter:blur(12px);
-}
-.site-link:hover { color:var(--accent3); border-color:rgba(167,139,250,.4); background:rgba(123,92,245,.1); transform:translateY(-2px); }
-.site-link::before { content:'↗'; }
-
-/* ════════════════════════════════════════════════
-   STACK — mobile: 1 col
-════════════════════════════════════════════════ */
-.stack-grid  { display:grid; grid-template-columns:1fr; gap:16px; }
-.stack-card  { padding:24px; }
-.stack-icon  { font-size:1.6rem; margin-bottom:10px; display:block; }
-.stack-category { font-family:'JetBrains Mono',monospace; font-size:.68rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent3); margin-bottom:6px; }
-.stack-title { font-size:1rem; font-weight:700; margin-bottom:10px; }
-.stack-items { display:flex; flex-direction:column; gap:6px; }
-.stack-item  { font-size:.85rem; color:var(--muted); display:flex; align-items:center; gap:8px; }
-.stack-item::before { content:'▸'; color:var(--accent); font-size:.68rem; }
-
-/* ════════════════════════════════════════════════
-   PHILOSOPHY
-════════════════════════════════════════════════ */
-.philosophy-card {
-  padding:32px 20px; text-align:center; position:relative; overflow:hidden;
-}
-.philosophy-card::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse at 50% 0%,rgba(123,92,245,.1),transparent 60%);
-  pointer-events:none;
-}
-.quote-mark {
-  font-family:'Orbitron',monospace; font-size:4rem;
-  color:rgba(123,92,245,.15); line-height:.5; margin-bottom:20px; display:block;
-}
-.quote-text {
-  font-size:clamp(1.1rem,4vw,1.7rem); font-weight:700;
-  letter-spacing:-.02em; margin:0 auto 24px; line-height:1.4;
-}
-.values-grid {
-  display:grid; grid-template-columns:1fr; gap:14px;
-  margin-top:32px; text-align:left;
-}
-.value-item { padding:16px; background:rgba(123,92,245,.06); border:1px solid var(--glass-border); border-radius:12px; }
-.value-emoji { font-size:1.2rem; margin-bottom:6px; display:block; }
-.value-text { font-size:.86rem; color:var(--muted); }
-.value-text strong { color:var(--text); display:block; margin-bottom:4px; font-size:.9rem; }
-
-/* ════════════════════════════════════════════════
-   WHY / VISION — mobile: 1 col
-════════════════════════════════════════════════ */
-.why-grid  { display:grid; grid-template-columns:1fr; gap:24px; }
-.why-card  { padding:28px 20px; }
-.why-item  { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid var(--glass-border); }
-.why-item:last-child { border-bottom:none; }
-.why-icon  {
-  width:38px;height:38px; border-radius:10px;
-  background:rgba(123,92,245,.12); border:1px solid rgba(123,92,245,.3);
-  display:flex; align-items:center; justify-content:center; font-size:.95rem; flex-shrink:0;
-}
-.why-text  { font-size:.88rem; color:var(--muted); line-height:1.6; }
-.why-text strong { color:var(--text); display:block; margin-bottom:3px; }
-
-/* NOW grid — mobile: 1 col */
-.now-grid { display:grid; grid-template-columns:1fr; gap:12px; }
-.now-item { padding:16px 18px; display:flex; align-items:center; gap:14px; }
-.now-dot  { width:8px;height:8px; border-radius:50%; background:var(--accent3); animation:pulse 2s infinite; flex-shrink:0; }
-.now-text { font-size:.88rem; color:var(--muted); line-height:1.4; }
-.now-text strong { color:var(--text); display:block; }
-
-.hobbies { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
-
-/* ════════════════════════════════════════════════
-   CONTACT
-════════════════════════════════════════════════ */
-.contact-card { padding:32px 20px; text-align:center; position:relative; overflow:hidden; }
-.contact-card::before {
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse at 50% 100%,rgba(79,142,247,.1),transparent 60%);
-  pointer-events:none;
-}
-.contact-links { display:flex; flex-direction:column; gap:12px; margin-top:28px; }
-.contact-btn {
-  display:inline-flex; align-items:center; justify-content:center; gap:10px;
-  padding:14px 24px; border-radius:14px; text-decoration:none;
-  font-family:'Syne',sans-serif; font-size:.9rem; font-weight:600; transition:all .3s;
-  width:100%;
-}
-.c-linkedin { background:rgba(10,102,194,.15); border:1px solid rgba(10,102,194,.4); color:#60a5fa; }
-.c-linkedin:hover { background:rgba(10,102,194,.25); transform:translateY(-2px); box-shadow:0 10px 24px rgba(10,102,194,.2); }
-.c-email    { background:rgba(167,139,250,.1);  border:1px solid rgba(167,139,250,.3); color:var(--accent3); }
-.c-email:hover    { background:rgba(167,139,250,.18); transform:translateY(-2px); box-shadow:0 10px 24px rgba(123,92,245,.2); }
-.c-whatsapp { background:rgba(37,211,102,.1);   border:1px solid rgba(37,211,102,.3); color:#4ade80; }
-.c-whatsapp:hover { background:rgba(37,211,102,.2);  transform:translateY(-2px); box-shadow:0 10px 24px rgba(37,211,102,.15); }
-
-/* ════════════════════════════════════════════════
-   FOOTER
-════════════════════════════════════════════════ */
-footer { padding:32px 0; border-top:1px solid var(--glass-border); text-align:center; position:relative; z-index:10; }
-.footer-logo {
-  font-family:'Orbitron',monospace; font-weight:900; font-size:.95rem;
-  background:linear-gradient(135deg,var(--accent3),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:6px;
-}
-.footer-sub { font-family:'JetBrains Mono',monospace; font-size:.68rem; color:var(--muted); letter-spacing:.08em; }
-
-/* ════════════════════════════════════════════════
-   SCROLL REVEAL
-════════════════════════════════════════════════ */
-.fade-up { opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease; }
-.fade-up.visible { opacity:1; transform:none; }
-
-/* ════════════════════════════════════════════════
-   TABLET — 600px+
-════════════════════════════════════════════════ */
-@media (min-width: 600px) {
-  .container { padding:0 24px; }
-
-  .logo { font-size:1.2rem; }
-
-  .projects-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .stack-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .now-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .values-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .contact-links { flex-direction:row; flex-wrap:wrap; justify-content:center; }
-  .contact-btn { width:auto; }
-
-  .orb-1 { width:380px;height:380px; }
-  .orb-2 { width:340px;height:340px; }
-}
-
-/* ════════════════════════════════════════════════
-   DESKTOP NAV — 768px+
-════════════════════════════════════════════════ */
-@media (min-width: 768px) {
-  nav .inner { padding:18px 24px; }
-
-  .nav-toggle { display:none; }
-
-  .nav-links {
-    display:flex !important; flex-direction:row;
-    align-items:center; gap:28px;
-    background:none; border:none; padding:0;
-    position:static;
-  }
-  .nav-links li a {
-    padding:0; font-size:.76rem;
-    position:relative;
-  }
-  .nav-links li a::after {
-    content:''; position:absolute; bottom:-4px;left:0;right:0; height:1px;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    transform:scaleX(0); transition:transform .3s;
-  }
-  .nav-links li a:hover::after { transform:scaleX(1); }
-  .nav-links li a:hover { background:none; }
-
-  section { padding:90px 0; }
-  .section-title { font-size:2.4rem; }
-
-  .hero-content { flex-direction:row; align-items:center; gap:48px; }
-  .hero-content > *:first-child { flex:1; }
-  .hero-content > *:last-child { flex:0 0 340px; }
-
-  .philosophy-card { padding:52px 40px; }
-  .contact-card { padding:52px 40px; }
-
-  .why-grid { grid-template-columns:1fr 1fr; }
-
-  .values-grid { grid-template-columns:repeat(3,1fr); }
-
-  .orb-1 { width:460px;height:460px; }
-  .orb-2 { width:400px;height:400px; }
-  .orb-3 { width:260px;height:260px; }
-}
-
-/* ════════════════════════════════════════════════
-   LARGE DESKTOP — 1024px+
-════════════════════════════════════════════════ */
-@media (min-width: 1024px) {
-  .container { padding:0 32px; }
-  section { padding:110px 0; }
-  .section-title { font-size:2.8rem; }
-
-  .logo { font-size:1.3rem; }
-  nav .inner { padding:20px 32px; }
-
-  .stack-grid { grid-template-columns:repeat(3,1fr); }
-
-  .hero-content > *:last-child { flex:0 0 380px; }
-
-  .philosophy-card { padding:64px; }
-  .contact-card { padding:64px; }
-
-  .orb-1 { width:500px;height:500px; }
-  .orb-2 { width:450px;height:450px; }
-  .orb-3 { width:300px;height:300px; }
-}
-</style>
-</head>
-<body>
-
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-<canvas id="canvas"></canvas>
-
-<!-- ═══════════ NAV ═══════════ -->
-<nav>
-  <div class="container">
-    <div class="inner">
-      <a href="#hero" class="logo">manouthenerd</a>
-      <button class="nav-toggle" id="navToggle" aria-label="Menu">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#projects" class="nav-link">Projets</a></li>
-        <li><a href="#stack" class="nav-link">Stack</a></li>
-        <li><a href="#philosophy" class="nav-link">Philosophie</a></li>
-        <li><a href="#contact" class="nav-link">Contact</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
-<!-- ═══════════ HERO ═══════════ -->
-<section id="hero">
-  <div class="container">
-    <div class="hero-content">
-      <div class="fade-up">
-        <div class="hero-badge">🟢 Disponible pour missions</div>
-        <h1 class="hero-name"><span>KACOU<br>EMMANUEL</span></h1>
-        <p class="hero-title">// Full-Stack Developer & Product Builder</p>
-        <p class="hero-desc">
-          Je conçois des produits digitaux utiles, ancrés dans les réalités locales,
-          avec une obsession : <strong>résoudre de vrais problèmes grâce à la tech</strong>.
-          Côte d'Ivoire 🇨🇮 — standards internationaux.
-        </p>
-        <div class="hero-cta">
-          <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
-          <a href="#contact" class="btn btn-ghost">Me contacter</a>
+    <!-- ═══════════ NAV ═══════════ -->
+    <nav>
+      <div class="container">
+        <div class="inner">
+          <a href="#hero" class="logo">manouthenerd</a>
+          <button class="nav-toggle" id="navToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+          <ul class="nav-links" id="navLinks">
+            <li><a href="#projects" class="nav-link">Projets</a></li>
+            <li><a href="#stack" class="nav-link">Stack</a></li>
+            <li><a href="#philosophy" class="nav-link">Philosophie</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
         </div>
       </div>
+    </nav>
 
-      <div class="glass hero-card fade-up" style="transition-delay:.15s">
-        <span class="flag-emoji">🇨🇮</span>
-        <div class="hero-location">
-          <span>Based in</span>
-          <div>Côte d'Ivoire</div>
-        </div>
-        <div class="stat-grid">
-          <div class="stat-item"><span class="stat-num">6+</span><span class="stat-label">Projets live</span></div>
-          <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Clients actifs</span></div>
-          <div class="stat-item"><span class="stat-num">∞</span><span class="stat-label">Curiosité</span></div>
-          <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Ship mode</span></div>
-        </div>
-        <div class="motto-text">
-          🥷 <strong>Trust The Process</strong><br>
-          🚀 Keep pushing & Level Up<br>
-          👾 Nerd Among Geek
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ═══════════ HERO ═══════════ -->
+    <section id="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="fade-up">
+            <div class="hero-badge">Disponible pour missions</div>
+            <h1 class="hero-name">
+              <span>KACOU<br />EMMANUEL</span>
+            </h1>
+            <p class="hero-title">// Full-Stack Developer & Product Builder</p>
+            <p class="hero-desc">
+              Je conçois des produits digitaux utiles, ancrés dans les réalités
+              locales, avec une obsession :
+              <strong>résoudre de vrais problèmes grâce à la tech</strong>. Côte
+              d'Ivoire 🇨🇮 — standards internationaux.
+            </p>
+            <div class="hero-cta">
+              <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
+              <a href="#contact" class="btn btn-ghost">Me contacter</a>
+            </div>
+          </div>
 
-<!-- ═══════════ PROJECTS ═══════════ -->
-<section id="projects">
-  <div class="container">
-    <div class="section-tag">Projects</div>
-    <h2 class="section-title">Ce que je construis</h2>
-    <p class="section-subtitle">Des produits concrets pensés pour l'Afrique, avec des standards internationaux. Je ship, j'itère, je résous.</p>
-
-    <div class="projects-grid">
-      <div class="glass project-card fade-up">
-        <span class="project-status status-wip">🔨 En cours</span>
-        <div class="project-accent" style="background:linear-gradient(90deg,#a855f7,#7b5cf5)"></div>
-        <h3 class="project-title">Abiaty Ma News</h3>
-        <p class="project-desc">Canal officiel d'information et de mémoire du village d'Abiaty. Actualités communautaires, annonces officielles, événements culturels et lien village ↔ diaspora.</p>
-        <div class="project-tags">
-          <span class="tag">communautaire</span><span class="tag">actualités</span><span class="tag">diaspora</span><span class="tag">culture</span>
-        </div>
-      </div>
-
-      <div class="glass project-card fade-up" style="transition-delay:.08s">
-        <span class="project-status status-wip">🔨 En cours</span>
-        <div class="project-accent" style="background:linear-gradient(90deg,#4f8ef7,#818cf8)"></div>
-        <h3 class="project-title">SANWI CONNECT</h3>
-        <p class="project-desc">Réseau social communautaire du peuple Sanwi. Publications sociales, interactions, culture, entraide et connexion entre villages et diaspora.</p>
-        <div class="project-tags">
-          <span class="tag">social network</span><span class="tag">Sanwi</span><span class="tag">communauté</span><span class="tag">entraide</span>
-        </div>
-      </div>
-
-      <div class="glass project-card fade-up" style="transition-delay:.16s">
-        <span class="project-status status-concept">💡 Concept / R&D</span>
-        <div class="project-accent" style="background:linear-gradient(90deg,#7b5cf5,#4f8ef7)"></div>
-        <h3 class="project-title">X-Connect P2P</h3>
-        <p class="project-desc">Application de réseautage peer-to-peer. Échange de profils via QR Code, partage de contacts, mode hybride. Pensé pour meetups et faible connectivité.</p>
-        <div class="project-tags">
-          <span class="tag">P2P</span><span class="tag">QR Code</span><span class="tag">networking</span><span class="tag">offline-first</span>
-        </div>
-      </div>
-
-      <div class="glass project-card fade-up" style="transition-delay:.24s">
-        <span class="project-status status-live">✅ Livrés</span>
-        <div class="project-accent" style="background:linear-gradient(90deg,#a78bfa,#818cf8)"></div>
-        <h3 class="project-title">SaaS & Autres projets</h3>
-        <p class="project-desc">Solutions de billetterie & guichet virtuel, applications de mise en relation, prototypes SaaS orientés productivité & IA.</p>
-        <div class="project-tags">
-          <span class="tag">SaaS</span><span class="tag">billetterie</span><span class="tag">IA</span><span class="tag">productivité</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="fade-up" style="transition-delay:.1s">
-      <div class="section-tag" style="margin-top:48px;margin-bottom:12px">Production — live</div>
-      <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px">Applications web livrées pour entreprises & particuliers :</p>
-      <div class="sites-grid">
-        <a href="https://www.geniusntech.com" target="_blank" class="site-link">geniusntech.com</a>
-        <a href="https://www.coopewo.org" target="_blank" class="site-link">coopewo.org</a>
-        <a href="https://www.attron-cab.com" target="_blank" class="site-link">attron-cab.com</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ STACK ═══════════ -->
-<section id="stack">
-  <div class="container">
-    <div class="section-tag">Tech Stack</div>
-    <h2 class="section-title">Mon arsenal</h2>
-    <p class="section-subtitle">Des outils choisis pour leur efficacité et leur adéquation aux réalités du terrain.</p>
-    <div class="stack-grid">
-      <div class="glass stack-card fade-up">
-        <span class="stack-icon">⚙️</span>
-        <div class="stack-category">Backend</div>
-        <div class="stack-title">Serveur & API</div>
-        <div class="stack-items">
-          <span class="stack-item">PHP / Laravel</span>
-          <span class="stack-item">API REST</span>
-          <span class="stack-item">Auth & permissions</span>
-          <span class="stack-item">Architecture modulaire</span>
-        </div>
-      </div>
-      <div class="glass stack-card fade-up" style="transition-delay:.08s">
-        <span class="stack-icon">🎨</span>
-        <div class="stack-category">Frontend</div>
-        <div class="stack-title">Interfaces</div>
-        <div class="stack-items">
-          <span class="stack-item">React / React Native</span>
-          <span class="stack-item">Vue.js / Nuxt</span>
-          <span class="stack-item">Mobile-first UX</span>
-          <span class="stack-item">UI accessible</span>
-        </div>
-      </div>
-      <div class="glass stack-card fade-up" style="transition-delay:.16s">
-        <span class="stack-icon">🔬</span>
-        <div class="stack-category">Data & Outils</div>
-        <div class="stack-title">Infra & Plus</div>
-        <div class="stack-items">
-          <span class="stack-item">PostgreSQL / MySQL</span>
-          <span class="stack-item">Git / GitHub</span>
-          <span class="stack-item">Docker (bases)</span>
-          <span class="stack-item">ML & IA (en cours)</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ PHILOSOPHY ═══════════ -->
-<section id="philosophy">
-  <div class="container">
-    <div class="section-tag">Philosophy</div>
-    <h2 class="section-title">Ce en quoi je crois</h2>
-    <div class="glass philosophy-card fade-up">
-      <span class="quote-mark">"</span>
-      <p class="quote-text">Un bon produit ne commence pas par le code, mais par une frustration réelle.</p>
-      <p style="font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted)">— Philosophie produit</p>
-      <div class="values-grid">
-        <div class="value-item">
-          <span class="value-emoji">🎯</span>
-          <div class="value-text"><strong>Clarté avant complexité</strong>Un produit simple et utile vaut mieux qu'un chef-d'œuvre incompris.</div>
-        </div>
-        <div class="value-item">
-          <span class="value-emoji">🔧</span>
-          <div class="value-text"><strong>Utilité avant la hype</strong>On ship quand ça résout un problème, pas quand c'est à la mode.</div>
-        </div>
-        <div class="value-item">
-          <span class="value-emoji">🌍</span>
-          <div class="value-text"><strong>Le terrain avant les slides</strong>La réalité du terrain guide chaque décision produit.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ WHY ═══════════ -->
-<section id="why">
-  <div class="container">
-    <div class="section-tag">Vision</div>
-    <h2 class="section-title">Pourquoi je construis</h2>
-    <div class="why-grid">
-      <div class="glass why-card fade-up">
-        <div class="why-item">
-          <div class="why-icon">🔗</div>
-          <div class="why-text"><strong>Reconnecter les communautés</strong>La tech peut tisser des liens entre villages et diaspora, entre passé et futur.</div>
-        </div>
-        <div class="why-item">
-          <div class="why-icon">🏘️</div>
-          <div class="why-text"><strong>Produits modernes pour tous</strong>Les villages africains ont aussi droit à des expériences digitales de qualité.</div>
-        </div>
-        <div class="why-item">
-          <div class="why-icon">🌐</div>
-          <div class="why-text"><strong>Impact local, portée globale</strong>Ce qui résout un problème local peut inspirer le monde entier.</div>
-        </div>
-      </div>
-
-      <div class="fade-up" style="transition-delay:.12s">
-        <div class="section-tag" style="margin-bottom:16px">En ce moment</div>
-        <div class="now-grid">
-          <div class="glass now-item"><div class="now-dot"></div><div class="now-text"><strong>Produits communautaires</strong>News & social en construction</div></div>
-          <div class="glass now-item"><div class="now-dot" style="background:var(--accent2)"></div><div class="now-text"><strong>Networking P2P</strong>Systèmes hybrides offline</div></div>
-          <div class="glass now-item"><div class="now-dot" style="background:#818cf8"></div><div class="now-text"><strong>IA & Data</strong>Montée en compétences active</div></div>
-          <div class="glass now-item"><div class="now-dot" style="background:#c084fc"></div><div class="now-text"><strong>Mode fondateur</strong>Activé 🚀</div></div>
-        </div>
-        <div style="margin-top:20px">
-          <div class="section-tag" style="margin-bottom:12px">À côté du code</div>
-          <div class="hobbies">
-            <span class="tag" style="font-size:.78rem;padding:7px 13px">🎧 Musique</span>
-            <span class="tag" style="font-size:.78rem;padding:7px 13px">🎮 Gaming</span>
-            <span class="tag" style="font-size:.78rem;padding:7px 13px">📚 Apprentissage</span>
-            <span class="tag" style="font-size:.78rem;padding:7px 13px">💻 Tech</span>
+          <div class="glass hero-card fade-up" style="transition-delay: 0.15s">
+            <span class="flag-emoji">🇨🇮</span>
+            <div class="hero-location">
+              <span>Based in</span>
+              <div>Côte d'Ivoire</div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-item">
+                <span class="stat-num">3+</span
+                ><span class="stat-label">Projets live</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">3+</span
+                ><span class="stat-label">Clients actifs</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">∞</span
+                ><span class="stat-label">Curiosité</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-num">100%</span
+                ><span class="stat-label">Ship mode</span>
+              </div>
+            </div>
+            <div class="motto-text">
+              🥷 <strong>Trust The Process</strong><br />
+              🚀 Keep pushing & Level Up<br />
+              👾 Nerd Among Geek
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══════════ CONTACT ═══════════ -->
-<section id="contact">
-  <div class="container">
-    <div class="glass contact-card fade-up">
-      <div class="section-tag" style="justify-content:center;margin-bottom:12px">Contact</div>
-      <h2 class="section-title" style="font-size:clamp(1.6rem,5vw,2.6rem)">Travaillons ensemble</h2>
-      <p style="color:var(--muted);font-size:.95rem;max-width:460px;margin:0 auto;line-height:1.7">
-        Freelance, co-création de produits, discussions tech & produit — je suis là.
-        On construit. <strong style="color:var(--accent3)">Ensemble.</strong>
-      </p>
-      <div class="contact-links">
-        <a href="https://www.linkedin.com/in/emmanuel-kacou-74397b247" target="_blank" class="contact-btn c-linkedin"><span>🔗</span> LinkedIn</a>
-        <a href="mailto:kacouemmanuel225@yahoo.com" class="contact-btn c-email"><span>✉️</span> Email</a>
-        <a href="https://wa.me/2250757567142" target="_blank" class="contact-btn c-whatsapp"><span>💬</span> WhatsApp</a>
+    <!-- ═══════════ PROJECTS ═══════════ -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-tag">Projects</div>
+        <h2 class="section-title">Ce que je construis</h2>
+        <p class="section-subtitle">
+          Des produits concrets pensés pour l'Afrique, avec des standards
+          internationaux. Je ship, j'itère, je résous.
+        </p>
+
+        <div class="projects-grid">
+          <div class="glass project-card fade-up">
+            <span class="project-status status-wip"><i data-lucide="hammer"></i> En cours</span>
+            <div
+              class="project-accent"
+              style="background: linear-gradient(90deg, #a855f7, #7b5cf5)"
+            ></div>
+            <h3 class="project-title">Abiaty Ma News</h3>
+            <p class="project-desc">
+              Canal officiel d'information et de mémoire du village d'Abiaty.
+              Actualités communautaires, annonces officielles, événements
+              culturels et lien village ↔ diaspora.
+            </p>
+            <div class="project-tags">
+              <span class="tag">communautaire</span
+              ><span class="tag">actualités</span
+              ><span class="tag">diaspora</span><span class="tag">culture</span>
+            </div>
+          </div>
+
+          <div
+            class="glass project-card fade-up"
+            style="transition-delay: 0.08s"
+          >
+            <span class="project-status status-wip"><i data-lucide="hammer"></i> En cours</span>
+            <div
+              class="project-accent"
+              style="background: linear-gradient(90deg, #4f8ef7, #818cf8)"
+            ></div>
+            <h3 class="project-title">SANWI CONNECT</h3>
+            <p class="project-desc">
+              Réseau social communautaire du peuple Sanwi. Publications
+              sociales, interactions, culture, entraide et connexion entre
+              villages et diaspora.
+            </p>
+            <div class="project-tags">
+              <span class="tag">social network</span
+              ><span class="tag">Sanwi</span><span class="tag">communauté</span
+              ><span class="tag">entraide</span>
+            </div>
+          </div>
+
+          <div
+            class="glass project-card fade-up"
+            style="transition-delay: 0.16s"
+          >
+            <span class="project-status status-concept"><i data-lucide="lightbulb"></i> Concept / R&D</span>
+            <div
+              class="project-accent"
+              style="background: linear-gradient(90deg, #7b5cf5, #4f8ef7)"
+            ></div>
+            <h3 class="project-title">X-Connect P2P</h3>
+            <p class="project-desc">
+              Application de réseautage peer-to-peer. Échange de profils via QR
+              Code, partage de contacts, mode hybride. Pensé pour meetups et
+              faible connectivité.
+            </p>
+            <div class="project-tags">
+              <span class="tag">P2P</span><span class="tag">QR Code</span
+              ><span class="tag">networking</span
+              ><span class="tag">offline-first</span>
+            </div>
+          </div>
+
+          <div
+            class="glass project-card fade-up"
+            style="transition-delay: 0.24s"
+          >
+            <span class="project-status status-live"><i data-lucide="check-circle"></i> Livrés</span>
+            <div
+              class="project-accent"
+              style="background: linear-gradient(90deg, #a78bfa, #818cf8)"
+            ></div>
+            <h3 class="project-title">SaaS & Autres projets</h3>
+            <p class="project-desc">
+              Solutions de billetterie & guichet virtuel, applications de mise
+              en relation, prototypes SaaS orientés productivité & IA.
+            </p>
+            <div class="project-tags">
+              <span class="tag">SaaS</span><span class="tag">billetterie</span
+              ><span class="tag">IA</span><span class="tag">productivité</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fade-up" style="transition-delay: 0.1s">
+          <div
+            class="section-tag"
+            style="margin-top: 48px; margin-bottom: 12px"
+          >
+            Production — live
+          </div>
+          <p
+            style="font-size: 0.88rem; color: var(--muted); margin-bottom: 16px"
+          >
+            Applications web livrées pour entreprises & particuliers :
+          </p>
+          <div class="sites-grid">
+            <a
+              href="https://www.geniusntech.com"
+              target="_blank"
+              class="site-link"
+              >geniusntech.com</a
+            >
+            <a href="https://www.coopewo.org" target="_blank" class="site-link"
+              >coopewo.org</a
+            >
+            <a
+              href="https://www.attron-cab.com"
+              target="_blank"
+              class="site-link"
+              >attron-cab.com</a
+            >
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
+    </section>
 
-<!-- ═══════════ FOOTER ═══════════ -->
-<footer>
-  <div class="container">
-    <div class="footer-logo">manouthenerd</div>
-    <div class="footer-sub">KACOU EMMANUEL © 2025 — Côte d'Ivoire 🇨🇮 — Trust The Process</div>
-  </div>
-</footer>
+    <!-- ═══════════ STACK ═══════════ -->
+    <section id="stack">
+      <div class="container">
+        <div class="section-tag">Tech Stack</div>
+        <h2 class="section-title">Mon arsenal</h2>
+        <p class="section-subtitle">
+          Des outils choisis pour leur efficacité et leur adéquation aux
+          réalités du terrain.
+        </p>
+        <div class="stack-grid">
+          <div class="glass stack-card fade-up">
+            <i data-lucide="server" class="stack-icon"></i>
+            <div class="stack-category">Backend</div>
+            <div class="stack-title">Serveur & API</div>
+            <div class="stack-items">
+              <span class="stack-item">PHP / Laravel</span>
+              <span class="stack-item">API REST</span>
+              <span class="stack-item">Auth & permissions</span>
+              <span class="stack-item">Architecture modulaire</span>
+            </div>
+          </div>
+          <div class="glass stack-card fade-up" style="transition-delay: 0.08s">
+            <i data-lucide="palette" class="stack-icon"></i>
+            <div class="stack-category">Frontend</div>
+            <div class="stack-title">Interfaces</div>
+            <div class="stack-items">
+              <span class="stack-item">React / React Native</span>
+              <span class="stack-item">Vue.js / Nuxt</span>
+              <span class="stack-item">Mobile-first UX</span>
+              <span class="stack-item">UI accessible</span>
+            </div>
+          </div>
+          <div class="glass stack-card fade-up" style="transition-delay: 0.16s">
+            <i data-lucide="database" class="stack-icon"></i>
+            <div class="stack-category">Data & Outils</div>
+            <div class="stack-title">Infra & Plus</div>
+            <div class="stack-items">
+              <span class="stack-item">PostgreSQL / MySQL</span>
+              <span class="stack-item">Git / GitHub</span>
+              <span class="stack-item">Docker (bases)</span>
+              <span class="stack-item">ML & IA (en cours)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<script>
-/* ── HAMBURGER NAV ─────────────────────────────────── */
-const toggle = document.getElementById('navToggle');
-const links  = document.getElementById('navLinks');
+    <!-- ═══════════ PHILOSOPHY ═══════════ -->
+    <section id="philosophy">
+      <div class="container">
+        <div class="section-tag">Philosophy</div>
+        <h2 class="section-title">Ce en quoi je crois</h2>
+        <div class="glass philosophy-card fade-up">
+          <span class="quote-mark">"</span>
+          <p class="quote-text">
+            Un bon produit ne commence pas par le code, mais par une frustration
+            réelle.
+          </p>
+          <p
+            style="
+              font-family: &quot;JetBrains Mono&quot;, monospace;
+              font-size: 0.75rem;
+              color: var(--muted);
+            "
+          >
+            — Philosophie produit
+          </p>
+          <div class="values-grid">
+            <div class="value-item">
+              <i data-lucide="target" class="value-emoji"></i>
+              <div class="value-text">
+                <strong>Clarté avant complexité</strong>Un produit simple et
+                utile vaut mieux qu'un chef-d'œuvre incompris.
+              </div>
+            </div>
+            <div class="value-item">
+              <i data-lucide="wrench" class="value-emoji"></i>
+              <div class="value-text">
+                <strong>Utilité avant la hype</strong>On ship quand ça résout un
+                problème, pas quand c'est à la mode.
+              </div>
+            </div>
+            <div class="value-item">
+              <i data-lucide="globe" class="value-emoji"></i>
+              <div class="value-text">
+                <strong>Le terrain avant les slides</strong>La réalité du
+                terrain guide chaque décision produit.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-toggle.addEventListener('click', () => {
-  toggle.classList.toggle('open');
-  links.classList.toggle('open');
-});
+    <!-- ═══════════ WHY ═══════════ -->
+    <section id="why">
+      <div class="container">
+        <div class="section-tag">Vision</div>
+        <h2 class="section-title">Pourquoi je construis</h2>
+        <div class="why-grid">
+          <div class="glass why-card fade-up">
+            <div class="why-item">
+              <div class="why-icon"><i data-lucide="link"></i></div>
+              <div class="why-text">
+                <strong>Reconnecter les communautés</strong>La tech peut tisser
+                des liens entre villages et diaspora, entre passé et futur.
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon"><i data-lucide="home"></i></div>
+              <div class="why-text">
+                <strong>Produits modernes pour tous</strong>Les villages
+                africains ont aussi droit à des expériences digitales de
+                qualité.
+              </div>
+            </div>
+            <div class="why-item">
+              <div class="why-icon"><i data-lucide="globe-2"></i></div>
+              <div class="why-text">
+                <strong>Impact local, portée globale</strong>Ce qui résout un
+                problème local peut inspirer le monde entier.
+              </div>
+            </div>
+          </div>
 
-// Close menu on link click
-document.querySelectorAll('.nav-link').forEach(a => {
-  a.addEventListener('click', () => {
-    toggle.classList.remove('open');
-    links.classList.remove('open');
-  });
-});
+          <div class="fade-up" style="transition-delay: 0.12s">
+            <div class="section-tag" style="margin-bottom: 16px">
+              En ce moment
+            </div>
+            <div class="now-grid">
+              <div class="glass now-item">
+                <div class="now-dot"></div>
+                <div class="now-text">
+                  <strong>Produits communautaires</strong>News & social en
+                  construction
+                </div>
+              </div>
+              <div class="glass now-item">
+                <div class="now-dot" style="background: var(--accent2)"></div>
+                <div class="now-text">
+                  <strong>Networking P2P</strong>Systèmes hybrides offline
+                </div>
+              </div>
+              <div class="glass now-item">
+                <div class="now-dot" style="background: #818cf8"></div>
+                <div class="now-text">
+                  <strong>IA & Data</strong>Montée en compétences active
+                </div>
+              </div>
+              <div class="glass now-item">
+                <div class="now-dot" style="background: #c084fc"></div>
+                <div class="now-text">
+                  <strong>Mode fondateur</strong>Activé <i data-lucide="rocket" style="display:inline;width:16px;height:16px;vertical-align:middle"></i>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 20px">
+              <div class="section-tag" style="margin-bottom: 12px">
+                À côté du code
+              </div>
+              <div class="hobbies">
+                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
+                  ><i data-lucide="headphones" style="width:14px;height:14px;margin-right:4px"></i> Musique</span
+                >
+                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
+                  ><i data-lucide="gamepad-2" style="width:14px;height:14px;margin-right:4px"></i> Gaming</span
+                >
+                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
+                  ><i data-lucide="book-open" style="width:14px;height:14px;margin-right:4px"></i> Apprentissage</span
+                >
+                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
+                  ><i data-lucide="code" style="width:14px;height:14px;margin-right:4px"></i> Tech</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-/* ── PARTICLES ─────────────────────────────────────── */
-const canvas = document.getElementById('canvas');
-const ctx    = canvas.getContext('2d');
-let W, H, particles = [];
+    <!-- ═══════════ CONTACT ═══════════ -->
+    <section id="contact">
+      <div class="container">
+        <div class="glass contact-card fade-up">
+          <div
+            class="section-tag"
+            style="justify-content: center; margin-bottom: 12px"
+          >
+            Contact
+          </div>
+          <h2
+            class="section-title"
+            style="font-size: clamp(1.6rem, 5vw, 2.6rem)"
+          >
+            Travaillons ensemble
+          </h2>
+          <p
+            style="
+              color: var(--muted);
+              font-size: 0.95rem;
+              max-width: 460px;
+              margin: 0 auto;
+              line-height: 1.7;
+            "
+          >
+            Freelance, co-création de produits, discussions tech & produit — je
+            suis là. On construit.
+            <strong style="color: var(--accent3)">Ensemble.</strong>
+          </p>
+          <div class="contact-links">
+            <a
+              href="https://www.linkedin.com/in/emmanuel-kacou-74397b247"
+              target="_blank"
+              class="contact-btn c-linkedin"
+              ><i data-lucide="linkedin"></i> LinkedIn</a
+            >
+            <a
+              href="https://www.github.com/Leplusbio225"
+              target="_blank"
+              class="contact-btn c-github"
+              ><i data-lucide="github"></i> Github</a
+            >
+            <a
+              href="mailto:kacouemmanuel225@yahoo.com"
+              class="contact-btn c-email"
+              ><i data-lucide="mail"></i> Email</a
+            >
+            <a
+              href="https://wa.me/2250757567142"
+              target="_blank"
+              class="contact-btn c-whatsapp"
+              ><i data-lucide="message-circle"></i> WhatsApp</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
 
-function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-resize();
-window.addEventListener('resize', () => { resize(); });
+    <!-- ═══════════ FOOTER ═══════════ -->
+    <footer>
+      <div class="container">
+        <div class="footer-logo">manouthenerd</div>
+        <div class="footer-sub">
+          KACOU EMMANUEL © 2026 — Côte d'Ivoire 🇨🇮 — Trust The Process
+        </div>
+      </div>
+    </footer>
 
-// Reduce count on mobile for performance
-const isMobile = () => window.innerWidth < 600;
-
-class Particle {
-  constructor() { this.reset(true); }
-  reset(init) {
-    this.x  = init ? Math.random() * W : (Math.random() > .5 ? 0 : W);
-    this.y  = init ? Math.random() * H : Math.random() * H;
-    this.vx = (Math.random() - .5) * .3;
-    this.vy = (Math.random() - .5) * .3;
-    this.size = Math.random() * 1.5 + .4;
-    const c = ['rgba(123,92,245,','rgba(79,142,247,','rgba(167,139,250,','rgba(109,40,217,'];
-    this.color = c[Math.floor(Math.random() * c.length)];
-    this.alpha = Math.random() * .45 + .1;
-    this.pulse = Math.random() * Math.PI * 2;
-    this.pulseSpeed = .007 + Math.random() * .015;
-  }
-  update() {
-    this.x += this.vx; this.y += this.vy; this.pulse += this.pulseSpeed;
-    if (this.x < -5 || this.x > W+5 || this.y < -5 || this.y > H+5) this.reset(false);
-  }
-  draw() {
-    const a = this.alpha * (.6 + .4 * Math.sin(this.pulse));
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = this.color + a + ')';
-    ctx.fill();
-  }
-}
-
-function buildParticles() {
-  particles = [];
-  const count = isMobile() ? 55 : 100;
-  for (let i = 0; i < count; i++) particles.push(new Particle());
-}
-buildParticles();
-window.addEventListener('resize', buildParticles);
-
-const CONNECT_DIST = () => isMobile() ? 80 : 110;
-
-function connectParticles() {
-  const dist = CONNECT_DIST();
-  for (let i = 0; i < particles.length; i++) {
-    for (let j = i+1; j < particles.length; j++) {
-      const dx = particles[i].x - particles[j].x;
-      const dy = particles[i].y - particles[j].y;
-      const d  = Math.sqrt(dx*dx + dy*dy);
-      if (d < dist) {
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(123,92,245,${(1-d/dist)*.08})`;
-        ctx.lineWidth = .5;
-        ctx.moveTo(particles[i].x, particles[i].y);
-        ctx.lineTo(particles[j].x, particles[j].y);
-        ctx.stroke();
-      }
-    }
-  }
-}
-
-let lastTime = 0;
-function animate(ts) {
-  if (ts - lastTime > 22) {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => { p.update(); p.draw(); });
-    connectParticles();
-    lastTime = ts;
-  }
-  requestAnimationFrame(animate);
-}
-requestAnimationFrame(animate);
-
-/* ── SCROLL REVEAL ─────────────────────────────────── */
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: .08 });
-
-document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-setTimeout(() => document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible')), 80);
-</script>
-</body>
+    <script src="script.js"></script>
+ 
+  </body>
 </html>
