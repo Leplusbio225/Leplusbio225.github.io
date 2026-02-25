@@ -1,34 +1,634 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>24bricks-Tech Portfolio</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>manouthenerd — KACOU EMMANUEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:           #0a0612;
+    --accent:       #7b5cf5;
+    --accent2:      #4f8ef7;
+    --accent3:      #a78bfa;
+    --glow:         #6d28d9;
+    --glass:        rgba(123,92,245,0.06);
+    --glass-border: rgba(123,92,245,0.18);
+    --glass-hover:  rgba(123,92,245,0.12);
+    --text:         #e8e3ff;
+    --muted:        #9b91c4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+
+  #canvas { position: fixed; inset: 0; z-index: 0; }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1; opacity: 0.35;
+  }
+
+  .orb {
+    position: fixed; border-radius: 50%; filter: blur(110px);
+    pointer-events: none; z-index: 2; opacity: 0.22;
+    animation: orbFloat 14s ease-in-out infinite;
+  }
+  .orb-1 { width:500px;height:500px; background:radial-gradient(circle,rgba(109,40,217,.7),transparent); top:-150px;left:-100px; }
+  .orb-2 { width:450px;height:450px; background:radial-gradient(circle,rgba(79,142,247,.6),transparent); bottom:10%;right:-120px; animation-delay:-7s; }
+  .orb-3 { width:300px;height:300px; background:radial-gradient(circle,rgba(123,92,245,.5),transparent); top:55%;left:35%; animation-delay:-3.5s; }
+  @keyframes orbFloat {
+    0%,100%{transform:translate(0,0) scale(1);}
+    33%{transform:translate(25px,-35px) scale(1.06);}
+    66%{transform:translate(-18px,18px) scale(.95);}
+  }
+
+  .container { max-width:1100px; margin:0 auto; padding:0 24px; position:relative; z-index:10; }
+
+  nav {
+    position:fixed; top:0;left:0;right:0; z-index:100;
+    padding:20px 0;
+    background:rgba(10,6,18,.65);
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+    border-bottom:1px solid var(--glass-border);
+  }
+  nav .inner { display:flex; align-items:center; justify-content:space-between; }
+  .logo {
+    font-family:'Orbitron',monospace; font-weight:900; font-size:1.3rem;
+    letter-spacing:-0.02em;
+    background:linear-gradient(135deg,var(--accent3) 0%,var(--accent) 50%,var(--accent2) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    text-decoration:none;
+  }
+  .nav-links { display:flex; gap:32px; list-style:none; }
+  .nav-links a {
+    font-family:'JetBrains Mono',monospace; font-size:.78rem; color:var(--muted);
+    text-decoration:none; letter-spacing:.08em; text-transform:uppercase; transition:color .3s; position:relative;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px;left:0;right:0; height:1px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    transform:scaleX(0); transition:transform .3s;
+  }
+  .nav-links a:hover{color:var(--accent3);}
+  .nav-links a:hover::after{transform:scaleX(1);}
+
+  .glass {
+    background:var(--glass); border:1px solid var(--glass-border);
+    backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+    border-radius:20px; transition:background .3s,border-color .3s,transform .3s;
+  }
+  .glass:hover { background:var(--glass-hover); border-color:rgba(123,92,245,.35); }
+
+  section { padding:100px 0; }
+
+  /* HERO */
+  #hero { min-height:100vh; display:flex; align-items:center; padding-top:100px; }
+  .hero-content { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--accent3);
+    letter-spacing:.1em; text-transform:uppercase; padding:6px 16px;
+    border:1px solid rgba(167,139,250,.3); border-radius:100px;
+    background:rgba(123,92,245,.08); margin-bottom:24px;
+  }
+  .hero-badge::before {
+    content:''; width:6px;height:6px; background:#4ade80;
+    border-radius:50%; animation:pulse 2s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+
+  .hero-name { font-size:clamp(2.8rem,5vw,4.2rem); font-weight:800; line-height:1.05; letter-spacing:-.03em; margin-bottom:8px; }
+  .hero-name span {
+    background:linear-gradient(135deg,#fff 20%,var(--accent3) 60%,var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .hero-title { font-family:'JetBrains Mono',monospace; font-size:1rem; color:var(--accent3); margin-bottom:20px; }
+  .hero-desc { font-size:1.05rem; color:var(--muted); line-height:1.7; margin-bottom:36px; max-width:480px; }
+  .hero-cta { display:flex; gap:16px; flex-wrap:wrap; }
+
+  .btn {
+    display:inline-flex; align-items:center; gap:8px; padding:12px 28px;
+    border-radius:12px; font-family:'Syne',sans-serif; font-size:.9rem; font-weight:600;
+    text-decoration:none; transition:all .3s;
+  }
+  .btn-primary {
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#fff; border:1px solid transparent;
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 12px 40px rgba(123,92,245,.45); }
+  .btn-ghost { background:var(--glass); color:var(--text); border:1px solid var(--glass-border); backdrop-filter:blur(12px); }
+  .btn-ghost:hover { background:var(--glass-hover); border-color:var(--accent); color:var(--accent3); transform:translateY(-2px); }
+
+  .hero-card { padding:36px; position:relative; overflow:hidden; }
+  .hero-card::before {
+    content:''; position:absolute; top:-50%;left:-50%; width:200%;height:200%;
+    background:radial-gradient(circle at 60% 40%,rgba(123,92,245,.1) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  .stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+  .stat-item { padding:16px; background:rgba(123,92,245,.07); border:1px solid var(--glass-border); border-radius:12px; text-align:center; }
+  .stat-num {
+    font-family:'Orbitron',monospace; font-size:1.6rem; font-weight:700;
+    background:linear-gradient(135deg,var(--accent3),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block;
+  }
+  .stat-label { font-family:'JetBrains Mono',monospace; font-size:.65rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; }
+  .flag-emoji { font-size:2.5rem; margin-bottom:8px; display:block; text-align:center; }
+  .motto-text {
+    font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--muted);
+    text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid var(--glass-border); line-height:1.6;
+  }
+  .motto-text strong { color:var(--accent3); }
+
+  .section-tag {
+    font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--accent3);
+    text-transform:uppercase; letter-spacing:.15em; display:flex; align-items:center; gap:10px; margin-bottom:12px;
+  }
+  .section-tag::before { content:''; width:32px; height:1px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+  .section-title { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; margin-bottom:16px; line-height:1.1; }
+  .section-subtitle { font-size:1rem; color:var(--muted); max-width:560px; line-height:1.7; margin-bottom:60px; }
+
+  /* ── PROJECT STATUS BADGES ── */
+  .project-status {
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'JetBrains Mono',monospace; font-size:.65rem; letter-spacing:.08em;
+    text-transform:uppercase; padding:4px 12px; border-radius:100px; font-weight:500; margin-bottom:14px;
+  }
+  .project-status::before { content:''; width:5px;height:5px; border-radius:50%; flex-shrink:0; }
+
+  .status-wip {
+    background:rgba(251,146,60,.12); border:1px solid rgba(251,146,60,.35); color:#fb923c;
+  }
+  .status-wip::before { background:#fb923c; animation:pulse 1.8s infinite; }
+
+  .status-live {
+    background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.35); color:#4ade80;
+  }
+  .status-live::before { background:#4ade80; }
+
+  .status-concept {
+    background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); color:var(--accent3);
+  }
+  .status-concept::before { background:var(--accent3); opacity:.7; }
+
+  /* PROJECTS */
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; }
+  .project-card { padding:32px; position:relative; overflow:hidden; }
+  .project-card::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,transparent 50%,rgba(123,92,245,.03));
+    pointer-events:none;
+  }
+  .project-accent { width:40px;height:4px; border-radius:100px; margin-bottom:20px; }
+  .project-title { font-size:1.25rem; font-weight:700; margin-bottom:8px; letter-spacing:-.02em; }
+  .project-desc { font-size:.88rem; color:var(--muted); line-height:1.65; margin-bottom:20px; }
+  .project-tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .tag {
+    font-family:'JetBrains Mono',monospace; font-size:.68rem; padding:4px 10px; border-radius:6px;
+    background:rgba(123,92,245,.08); border:1px solid var(--glass-border); color:var(--muted); letter-spacing:.04em;
+  }
+
+  /* STACK */
+  .stack-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .stack-card { padding:28px; }
+  .stack-icon { font-size:1.8rem; margin-bottom:12px; display:block; }
+  .stack-category { font-family:'JetBrains Mono',monospace; font-size:.7rem; text-transform:uppercase; letter-spacing:.1em; color:var(--accent3); margin-bottom:8px; }
+  .stack-title { font-size:1.05rem; font-weight:700; margin-bottom:12px; }
+  .stack-items { display:flex; flex-direction:column; gap:6px; }
+  .stack-item { font-size:.85rem; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .stack-item::before { content:'▸'; color:var(--accent); font-size:.7rem; }
+
+  /* PHILOSOPHY */
+  .philosophy-card { padding:64px; text-align:center; position:relative; overflow:hidden; }
+  .philosophy-card::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 0%,rgba(123,92,245,.1) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  .quote-mark { font-family:'Orbitron',monospace; font-size:6rem; color:rgba(123,92,245,.15); line-height:.5; margin-bottom:24px; display:block; }
+  .quote-text { font-size:clamp(1.3rem,3vw,2rem); font-weight:700; letter-spacing:-.02em; max-width:700px; margin:0 auto 32px; line-height:1.4; }
+  .values-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:48px; text-align:left; }
+  .value-item { padding:20px; background:rgba(123,92,245,.06); border:1px solid var(--glass-border); border-radius:12px; }
+  .value-emoji { font-size:1.3rem; margin-bottom:8px; display:block; }
+  .value-text { font-size:.88rem; color:var(--muted); }
+  .value-text strong { color:var(--text); display:block; margin-bottom:4px; font-size:.92rem; }
+
+  /* WHY */
+  .why-grid { display:grid; grid-template-columns:1fr 1fr; gap:32px; align-items:start; }
+  .why-card { padding:40px; }
+  .why-item { display:flex; align-items:flex-start; gap:16px; padding:16px 0; border-bottom:1px solid var(--glass-border); }
+  .why-item:last-child { border-bottom:none; }
+  .why-icon { width:40px;height:40px; border-radius:10px; background:rgba(123,92,245,.12); border:1px solid rgba(123,92,245,.3); display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  .why-text { font-size:.9rem; color:var(--muted); line-height:1.6; }
+  .why-text strong { color:var(--text); display:block; margin-bottom:4px; }
+
+  .now-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; }
+  .now-item { padding:20px 24px; display:flex; align-items:center; gap:16px; }
+  .now-dot { width:8px;height:8px; border-radius:50%; background:var(--accent3); animation:pulse 2s infinite; flex-shrink:0; }
+  .now-text { font-size:.9rem; color:var(--muted); line-height:1.5; }
+  .now-text strong { color:var(--text); display:block; }
+
+  .sites-grid { display:flex; flex-wrap:wrap; gap:12px; }
+  .site-link {
+    display:inline-flex; align-items:center; gap:8px; padding:10px 20px;
+    background:var(--glass); border:1px solid var(--glass-border); border-radius:10px;
+    color:var(--muted); text-decoration:none; font-family:'JetBrains Mono',monospace;
+    font-size:.78rem; transition:all .3s; backdrop-filter:blur(12px);
+  }
+  .site-link:hover { color:var(--accent3); border-color:rgba(167,139,250,.4); background:rgba(123,92,245,.1); transform:translateY(-2px); }
+  .site-link::before { content:'↗'; }
+
+  /* CONTACT */
+  .contact-card { padding:64px; text-align:center; position:relative; overflow:hidden; }
+  .contact-card::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 100%,rgba(79,142,247,.1) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  .contact-links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-top:36px; }
+  .contact-btn {
+    display:inline-flex; align-items:center; gap:10px; padding:14px 28px;
+    border-radius:14px; text-decoration:none; font-family:'Syne',sans-serif;
+    font-size:.9rem; font-weight:600; transition:all .3s;
+  }
+  .c-linkedin { background:rgba(10,102,194,.15); border:1px solid rgba(10,102,194,.4); color:#60a5fa; }
+  .c-linkedin:hover { background:rgba(10,102,194,.25); transform:translateY(-3px); box-shadow:0 12px 30px rgba(10,102,194,.2); }
+  .c-email { background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); color:var(--accent3); }
+  .c-email:hover { background:rgba(167,139,250,.18); transform:translateY(-3px); box-shadow:0 12px 30px rgba(123,92,245,.2); }
+  .c-whatsapp { background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.3); color:#4ade80; }
+  .c-whatsapp:hover { background:rgba(37,211,102,.2); transform:translateY(-3px); box-shadow:0 12px 30px rgba(37,211,102,.15); }
+
+  footer { padding:40px 0; border-top:1px solid var(--glass-border); text-align:center; position:relative; z-index:10; }
+  .footer-logo {
+    font-family:'Orbitron',monospace; font-weight:900; font-size:1rem;
+    background:linear-gradient(135deg,var(--accent3),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:8px;
+  }
+  .footer-sub { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--muted); letter-spacing:.1em; }
+
+  .fade-up { opacity:0; transform:translateY(30px); transition:opacity .7s ease,transform .7s ease; }
+  .fade-up.visible { opacity:1; transform:none; }
+
+  @media(max-width:768px){
+    .hero-content,.why-grid{grid-template-columns:1fr;gap:40px;}
+    .stack-grid{grid-template-columns:1fr 1fr;}
+    .values-grid,.now-grid{grid-template-columns:1fr;}
+    .philosophy-card,.contact-card{padding:36px 24px;}
+    nav .inner{flex-direction:column;gap:16px;}
+    .nav-links{gap:16px;}
+  }
+  @media(max-width:480px){
+    .stack-grid,.projects-grid{grid-template-columns:1fr;}
+  }
+</style>
 </head>
 <body>
 
-<div class="navbar">
-    <div class="logo">@TheNerd<span>.</span><span>.</span><span>.</span></div>
-    <div class="theme">
-        <div class="switch">
-            <div class="round">
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<canvas id="canvas"></canvas>
 
-            </div>
+<nav>
+  <div class="container">
+    <div class="inner">
+      <a href="#hero" class="logo">manouthenerd</a>
+      <ul class="nav-links">
+        <li><a href="#projects">Projets</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#philosophy">Philosophie</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="fade-up">
+        <div class="hero-badge">🟢 Disponible pour missions</div>
+        <h1 class="hero-name"><span>KACOU<br>EMMANUEL</span></h1>
+        <p class="hero-title">// Full-Stack Developer & Product Builder</p>
+        <p class="hero-desc">
+          Je conçois des produits digitaux utiles, ancrés dans les réalités locales,
+          avec une obsession : <strong style="color:var(--accent3)">résoudre de vrais problèmes grâce à la tech</strong>.
+          Côte d'Ivoire 🇨🇮 — standards internationaux.
+        </p>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
+          <a href="#contact" class="btn btn-ghost">Me contacter</a>
         </div>
+      </div>
+      <div class="glass hero-card fade-up" style="transition-delay:.2s">
+        <span class="flag-emoji">🇨🇮</span>
+        <div style="text-align:center">
+          <span style="font-family:'Orbitron',monospace;font-size:.9rem;color:var(--muted)">Based in</span>
+          <div style="font-weight:700;font-size:1.1rem;margin-top:4px">Côte d'Ivoire</div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-item"><span class="stat-num">6+</span><span class="stat-label">Projets live</span></div>
+          <div class="stat-item"><span class="stat-num">3+</span><span class="stat-label">Clients actifs</span></div>
+          <div class="stat-item"><span class="stat-num">∞</span><span class="stat-label">Curiosité</span></div>
+          <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Ship mode</span></div>
+        </div>
+        <div class="motto-text">
+          🥷 <strong>Trust The Process</strong><br>
+          🚀 Keep pushing & Level Up<br>
+          👾 Nerd Among Geek
+        </div>
+      </div>
     </div>
-    <div class="menu">
-        <ul>
-            <li><a class="home" href="">Home</a></li>
-            <li><a class="about" href="">About</a></li>
-            <li><a class="project" href="">Project</a></li>
-        </ul>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="section-tag">Projects</div>
+    <h2 class="section-title">Ce que je construis</h2>
+    <p class="section-subtitle">Des produits concrets pensés pour l'Afrique, avec des standards internationaux. Je ship, j'itère, je résous.</p>
+    <div class="projects-grid">
+
+      <div class="glass project-card fade-up">
+        <span class="project-status status-wip">🔨 En cours</span>
+        <div class="project-accent" style="background:linear-gradient(90deg,#a855f7,#7b5cf5)"></div>
+        <h3 class="project-title">Abiaty Ma News</h3>
+        <p class="project-desc">Canal officiel d'information et de mémoire du village d'Abiaty. Actualités communautaires, annonces officielles, événements culturels et lien village ↔ diaspora.</p>
+        <div class="project-tags">
+          <span class="tag">communautaire</span><span class="tag">actualités</span><span class="tag">diaspora</span><span class="tag">culture</span>
+        </div>
+      </div>
+
+      <div class="glass project-card fade-up" style="transition-delay:.1s">
+        <span class="project-status status-wip">🔨 En cours</span>
+        <div class="project-accent" style="background:linear-gradient(90deg,#4f8ef7,#818cf8)"></div>
+        <h3 class="project-title">SANWI CONNECT</h3>
+        <p class="project-desc">Réseau social communautaire du peuple Sanwi. Publications sociales, interactions, culture, entraide et connexion entre villages et diaspora.</p>
+        <div class="project-tags">
+          <span class="tag">social network</span><span class="tag">Sanwi</span><span class="tag">communauté</span><span class="tag">entraide</span>
+        </div>
+      </div>
+
+      <div class="glass project-card fade-up" style="transition-delay:.2s">
+        <span class="project-status status-concept">💡 Concept / R&D</span>
+        <div class="project-accent" style="background:linear-gradient(90deg,#7b5cf5,#4f8ef7)"></div>
+        <h3 class="project-title">X-Connect P2P</h3>
+        <p class="project-desc">Application de réseautage peer-to-peer. Échange de profils via QR Code, partage de contacts, mode hybride. Pensé pour meetups et faible connectivité.</p>
+        <div class="project-tags">
+          <span class="tag">P2P</span><span class="tag">QR Code</span><span class="tag">networking</span><span class="tag">offline-first</span>
+        </div>
+      </div>
+
+      <div class="glass project-card fade-up" style="transition-delay:.3s">
+        <span class="project-status status-live">✅ Livrés</span>
+        <div class="project-accent" style="background:linear-gradient(90deg,#a78bfa,#818cf8)"></div>
+        <h3 class="project-title">SaaS & Autres projets</h3>
+        <p class="project-desc">Solutions de billetterie & guichet virtuel, applications de mise en relation, prototypes SaaS orientés productivité & IA.</p>
+        <div class="project-tags">
+          <span class="tag">SaaS</span><span class="tag">billetterie</span><span class="tag">IA</span><span class="tag">productivité</span>
+        </div>
+      </div>
     </div>
-</div>
 
-<div class="path"></div>
+    <div style="margin-top:48px" class="fade-up">
+      <p class="section-tag" style="margin-bottom:20px">Production — live</p>
+      <p style="font-size:.9rem;color:var(--muted);margin-bottom:20px">Applications web livrées pour entreprises & particuliers :</p>
+      <div class="sites-grid">
+        <a href="https://www.geniusntech.com" target="_blank" class="site-link">geniusntech.com</a>
+        <a href="https://www.coopewo.org" target="_blank" class="site-link">coopewo.org</a>
+        <a href="https://www.attron-cab.com" target="_blank" class="site-link">attron-cab.com</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-<footer>Coding with &hearts;</footer>
-        
+<section id="stack">
+  <div class="container">
+    <div class="section-tag">Tech Stack</div>
+    <h2 class="section-title">Mon arsenal</h2>
+    <p class="section-subtitle">Des outils choisis pour leur efficacité et leur adéquation aux réalités du terrain.</p>
+    <div class="stack-grid">
+      <div class="glass stack-card fade-up">
+        <span class="stack-icon">⚙️</span>
+        <div class="stack-category">Backend</div>
+        <div class="stack-title">Serveur & API</div>
+        <div class="stack-items">
+          <span class="stack-item">PHP / Laravel</span>
+          <span class="stack-item">API REST</span>
+          <span class="stack-item">Auth & permissions</span>
+          <span class="stack-item">Architecture modulaire</span>
+        </div>
+      </div>
+      <div class="glass stack-card fade-up" style="transition-delay:.1s">
+        <span class="stack-icon">🎨</span>
+        <div class="stack-category">Frontend</div>
+        <div class="stack-title">Interfaces</div>
+        <div class="stack-items">
+          <span class="stack-item">React / React Native</span>
+          <span class="stack-item">Vue.js / Nuxt</span>
+          <span class="stack-item">Mobile-first UX</span>
+          <span class="stack-item">UI accessible</span>
+        </div>
+      </div>
+      <div class="glass stack-card fade-up" style="transition-delay:.2s">
+        <span class="stack-icon">🔬</span>
+        <div class="stack-category">Data & Outils</div>
+        <div class="stack-title">Infra & Plus</div>
+        <div class="stack-items">
+          <span class="stack-item">PostgreSQL / MySQL</span>
+          <span class="stack-item">Git / GitHub</span>
+          <span class="stack-item">Docker (bases)</span>
+          <span class="stack-item">ML & IA (en cours)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="philosophy">
+  <div class="container">
+    <div class="section-tag">Philosophy</div>
+    <h2 class="section-title">Ce en quoi je crois</h2>
+    <div class="glass philosophy-card fade-up">
+      <span class="quote-mark">"</span>
+      <p class="quote-text">Un bon produit ne commence pas par le code, mais par une frustration réelle.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--muted)">— Philosophie produit</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <span class="value-emoji">🎯</span>
+          <div class="value-text"><strong>Clarté avant complexité</strong>Un produit simple et utile vaut mieux qu'un chef-d'œuvre incompris.</div>
+        </div>
+        <div class="value-item">
+          <span class="value-emoji">🔧</span>
+          <div class="value-text"><strong>Utilité avant la hype</strong>On ship quand ça résout un problème, pas quand c'est à la mode.</div>
+        </div>
+        <div class="value-item">
+          <span class="value-emoji">🌍</span>
+          <div class="value-text"><strong>Le terrain avant les slides</strong>La réalité du terrain guide chaque décision produit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="container">
+    <div class="section-tag">Vision</div>
+    <h2 class="section-title">Pourquoi je construis</h2>
+    <div class="why-grid">
+      <div class="glass why-card fade-up">
+        <div class="why-item">
+          <div class="why-icon">🔗</div>
+          <div class="why-text"><strong>Reconnecter les communautés</strong>La tech peut tisser des liens entre villages et diaspora, entre passé et futur.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">🏘️</div>
+          <div class="why-text"><strong>Produits modernes pour tous</strong>Les villages africains ont aussi droit à des expériences digitales de qualité.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-icon">🌐</div>
+          <div class="why-text"><strong>Impact local, portée globale</strong>Ce qui résout un problème local peut inspirer le monde entier.</div>
+        </div>
+      </div>
+      <div class="fade-up" style="transition-delay:.15s">
+        <div class="section-tag" style="margin-bottom:20px">En ce moment</div>
+        <div class="now-grid">
+          <div class="glass now-item"><div class="now-dot"></div><div class="now-text"><strong>Produits communautaires</strong>News & social en construction</div></div>
+          <div class="glass now-item"><div class="now-dot" style="background:var(--accent2)"></div><div class="now-text"><strong>Networking P2P</strong>Systèmes hybrides offline</div></div>
+          <div class="glass now-item"><div class="now-dot" style="background:#818cf8"></div><div class="now-text"><strong>IA & Data</strong>Montée en compétences active</div></div>
+          <div class="glass now-item"><div class="now-dot" style="background:#c084fc"></div><div class="now-text"><strong>Mode fondateur</strong>Activé 🚀</div></div>
+        </div>
+        <div style="margin-top:20px">
+          <div class="section-tag" style="margin-bottom:16px">À côté du code</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <span class="tag" style="font-size:.8rem;padding:8px 14px">🎧 Musique</span>
+            <span class="tag" style="font-size:.8rem;padding:8px 14px">🎮 Gaming</span>
+            <span class="tag" style="font-size:.8rem;padding:8px 14px">📚 Apprentissage</span>
+            <span class="tag" style="font-size:.8rem;padding:8px 14px">💻 Exploration tech</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="glass contact-card fade-up">
+      <div class="section-tag" style="justify-content:center;margin-bottom:16px">Contact</div>
+      <h2 class="section-title" style="font-size:clamp(1.8rem,4vw,2.8rem)">Travaillons ensemble</h2>
+      <p style="color:var(--muted);font-size:1rem;max-width:500px;margin:0 auto;line-height:1.7">
+        Freelance, co-création de produits, discussions tech & produit — je suis là.
+        On construit. <strong style="color:var(--accent3)">Ensemble.</strong>
+      </p>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/emmanuel-kacou-74397b247" target="_blank" class="contact-btn c-linkedin"><span>🔗</span> LinkedIn</a>
+        <a href="mailto:kacouemmanuel225@yahoo.com" class="contact-btn c-email"><span>✉️</span> Email</a>
+        <a href="https://wa.me/2250757567142" target="_blank" class="contact-btn c-whatsapp"><span>💬</span> WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-logo">manouthenerd</div>
+    <div class="footer-sub">KACOU EMMANUEL © 2025 — Côte d'Ivoire 🇨🇮 — Trust The Process</div>
+  </div>
+</footer>
+
+<script>
+// ── PARTICLES — violet/bleu, NO mouse interaction ──────────────────────
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init) {
+    this.x = init ? Math.random() * W : (Math.random() > .5 ? 0 : W);
+    this.y = init ? Math.random() * H : Math.random() * H;
+    this.vx = (Math.random() - .5) * .35;
+    this.vy = (Math.random() - .5) * .35;
+    this.size = Math.random() * 1.6 + .4;
+    const c = [
+      'rgba(123,92,245,', 'rgba(79,142,247,',
+      'rgba(167,139,250,','rgba(109,40,217,'
+    ];
+    this.color = c[Math.floor(Math.random() * c.length)];
+    this.alpha = Math.random() * .5 + .1;
+    this.pulse = Math.random() * Math.PI * 2;
+    this.pulseSpeed = .008 + Math.random() * .018;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy; this.pulse += this.pulseSpeed;
+    if (this.x < -5 || this.x > W+5 || this.y < -5 || this.y > H+5) this.reset(false);
+  }
+  draw() {
+    const a = this.alpha * (.65 + .35 * Math.sin(this.pulse));
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color + a + ')';
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 100; i++) particles.push(new Particle());
+
+function connectParticles() {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 110) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(123,92,245,${(1-dist/110)*.09})`;
+        ctx.lineWidth = .5;
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+let lastTime = 0;
+function animate(ts) {
+  if (ts - lastTime > 20) {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    connectParticles();
+    lastTime = ts;
+  }
+  requestAnimationFrame(animate);
+}
+requestAnimationFrame(animate);
+
+// ── SCROLL REVEAL ────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1 });
+
+document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
+setTimeout(() => document.querySelectorAll('#hero .fade-up').forEach(el => el.classList.add('visible')), 100);
+</script>
 </body>
 </html>
