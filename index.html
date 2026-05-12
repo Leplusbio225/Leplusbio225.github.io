@@ -3,471 +3,350 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>manouthenerd — KACOU EMMANUEL</title>
+    <title>Emmanuel Kacou — Product Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://unpkg.com/lucide@latest"></script>
   </head>
   <body>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <canvas id="canvas"></canvas>
-
-    <!-- ═══════════ NAV ═══════════ -->
     <nav>
-      <div class="container">
-        <div class="inner">
-          <a href="#hero" class="logo">manouthenerd</a>
-          <button class="nav-toggle" id="navToggle" aria-label="Menu">
-            <span></span><span></span><span></span>
-          </button>
-          <ul class="nav-links" id="navLinks">
-            <li><a href="#projects" class="nav-link">Projets</a></li>
-            <li><a href="#stack" class="nav-link">Stack</a></li>
-            <li><a href="#philosophy" class="nav-link">Philosophie</a></li>
-            <li><a href="#contact" class="nav-link">Contact</a></li>
-          </ul>
-        </div>
+      <div class="nav-logo"><span>EK</span> / manouthenerd</div>
+      <div class="nav-links">
+        <a href="#projects">projects</a>
+        <a href="#stack">stack</a>
+        <a href="#philosophy">philosophy</a>
+        <a href="#contact">contact</a>
       </div>
     </nav>
 
-    <!-- ═══════════ HERO ═══════════ -->
-    <section id="hero">
-      <div class="container">
-        <div class="hero-content">
-          <div class="fade-up">
-            <div class="hero-badge">Disponible pour missions</div>
-            <h1 class="hero-name">
-              <span>KACOU<br />EMMANUEL</span>
-            </h1>
-            <p class="hero-title">// Full-Stack Developer & Product Builder</p>
-            <p class="hero-desc">
-              Je conçois des produits digitaux utiles, ancrés dans les réalités
-              locales, avec une obsession :
-              <strong>résoudre de vrais problèmes grâce à la tech</strong>. Côte
-              d'Ivoire 🇨🇮 — standards internationaux.
-            </p>
-            <div class="hero-cta">
-              <a href="#projects" class="btn btn-primary">Voir mes projets →</a>
-              <a href="#contact" class="btn btn-ghost">Me contacter</a>
-            </div>
-          </div>
-
-          <div class="glass hero-card fade-up" style="transition-delay: 0.15s">
-            <span class="flag-emoji">🇨🇮</span>
-            <div class="hero-location">
-              <span>Based in</span>
-              <div>Côte d'Ivoire</div>
-            </div>
-            <div class="stat-grid">
-              <div class="stat-item">
-                <span class="stat-num">3+</span
-                ><span class="stat-label">Projets live</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-num">3+</span
-                ><span class="stat-label">Clients actifs</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-num">∞</span
-                ><span class="stat-label">Curiosité</span>
-              </div>
-              <div class="stat-item">
-                <span class="stat-num">100%</span
-                ><span class="stat-label">Ship mode</span>
-              </div>
-            </div>
-            <div class="motto-text">
-              🥷 <strong>Trust The Process</strong><br />
-              🚀 Keep pushing & Level Up<br />
-              👾 Nerd Among Geek
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════ PROJECTS ═══════════ -->
-    <section id="projects">
-      <div class="container">
-        <div class="section-tag">Projects</div>
-        <h2 class="section-title">Ce que je construis</h2>
-        <p class="section-subtitle">
-          Des produits concrets pensés pour l'Afrique, avec des standards
-          internationaux. Je ship, j'itère, je résous.
+    <main>
+      <!-- HERO -->
+      <section id="hero">
+        <div class="tag">Abidjan, Côte d'Ivoire 🇨🇮</div>
+        <h1>Product builder.<br />Shipping for <em>Africa</em>.</h1>
+        <p class="hero-sub">
+          Full-stack developer turning real frustrations into
+          <strong>concrete digital products</strong> — web, mobile, and systems.
+          Building with international standards, for local impact.
         </p>
+        <div class="rust-note">
+          <span class="dot"></span>
+          currently learning Rust 🦀 — for blockchain & systems infrastructure
+        </div>
+        <div class="hero-cta">
+          <a href="#projects" class="btn btn-primary">View projects</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+      </section>
 
-        <div class="projects-grid">
-          <div class="glass project-card fade-up">
-            <span class="project-status status-wip"><i data-lucide="hammer"></i> En cours</span>
-            <div
-              class="project-accent"
-              style="background: linear-gradient(90deg, #a855f7, #7b5cf5)"
-            ></div>
-            <h3 class="project-title">Abiaty Ma News</h3>
-            <p class="project-desc">
-              Canal officiel d'information et de mémoire du village d'Abiaty.
-              Actualités communautaires, annonces officielles, événements
-              culturels et lien village ↔ diaspora.
-            </p>
-            <div class="project-tags">
-              <span class="tag">communautaire</span
-              ><span class="tag">actualités</span
-              ><span class="tag">diaspora</span><span class="tag">culture</span>
+      <!-- PROJECTS -->
+      <section id="projects">
+        <div class="section-label">Projects</div>
+        <div class="projects-grid reveal">
+          <div
+            class="project-item linked"
+            onclick="window.open('https://www.geniusntech.com')"
+          >
+            <div>
+              <div class="project-num">01</div>
+              <div class="project-name">Genius N'Tech</div>
+              <div class="project-desc">
+                Web application in production for a tech company — delivered as
+                freelance mission.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">Laravel</span>
+                <span class="project-tag">React</span>
+                <span class="project-tag">Production</span>
+              </div>
             </div>
+            <div class="project-arrow">↗</div>
           </div>
 
           <div
-            class="glass project-card fade-up"
-            style="transition-delay: 0.08s"
+            class="project-item linked"
+            onclick="window.open('https://www.coopewo.org')"
           >
-            <span class="project-status status-wip"><i data-lucide="hammer"></i> En cours</span>
-            <div
-              class="project-accent"
-              style="background: linear-gradient(90deg, #4f8ef7, #818cf8)"
-            ></div>
-            <h3 class="project-title">SANWI CONNECT</h3>
-            <p class="project-desc">
-              Réseau social communautaire du peuple Sanwi. Publications
-              sociales, interactions, culture, entraide et connexion entre
-              villages et diaspora.
-            </p>
-            <div class="project-tags">
-              <span class="tag">social network</span
-              ><span class="tag">Sanwi</span><span class="tag">communauté</span
-              ><span class="tag">entraide</span>
+            <div>
+              <div class="project-num">02</div>
+              <div class="project-name">Coopewo</div>
+              <div class="project-desc">
+                Platform for a cooperative organization — membership management
+                and digital presence.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">Laravel</span>
+                <span class="project-tag">Vue.js</span>
+                <span class="project-tag">Production</span>
+              </div>
             </div>
+            <div class="project-arrow">↗</div>
           </div>
 
           <div
-            class="glass project-card fade-up"
-            style="transition-delay: 0.16s"
+            class="project-item linked"
+            onclick="window.open('https://www.attron-cab.com')"
           >
-            <span class="project-status status-concept"><i data-lucide="lightbulb"></i> Concept / R&D</span>
-            <div
-              class="project-accent"
-              style="background: linear-gradient(90deg, #7b5cf5, #4f8ef7)"
-            ></div>
-            <h3 class="project-title">X-Connect P2P</h3>
-            <p class="project-desc">
-              Application de réseautage peer-to-peer. Échange de profils via QR
-              Code, partage de contacts, mode hybride. Pensé pour meetups et
-              faible connectivité.
-            </p>
-            <div class="project-tags">
-              <span class="tag">P2P</span><span class="tag">QR Code</span
-              ><span class="tag">networking</span
-              ><span class="tag">offline-first</span>
+            <div>
+              <div class="project-num">03</div>
+              <div class="project-name">Attron Cab</div>
+              <div class="project-desc">
+                Digital platform for a transport company in Abidjan.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">Laravel</span>
+                <span class="project-tag">TailwindCSS</span>
+                <span class="project-tag">Production</span>
+              </div>
+            </div>
+            <div class="project-arrow">↗</div>
+          </div>
+
+          <div class="project-item">
+            <div>
+              <div class="project-num">04</div>
+              <div class="project-name">Abiaty Ma News</div>
+              <div class="project-desc">
+                Community news and memory platform for the village of Abiaty —
+                connecting residents and diaspora through local news, events,
+                and obituaries.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">Laravel API</span>
+                <span class="project-tag">React Native</span>
+                <span class="project-tag">Meilisearch</span>
+                <span class="project-tag">In progress</span>
+              </div>
+            </div>
+            <div class="project-arrow">↗</div>
+          </div>
+
+          <div class="project-item">
+            <div>
+              <div class="project-num">05</div>
+              <div class="project-name">SANWI CONNECT</div>
+              <div class="project-desc">
+                Social network for the Sanwi community — publications,
+                interactions, culture, mutual aid, and diaspora connection.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">React Native</span>
+                <span class="project-tag">Laravel API</span>
+                <span class="project-tag">In progress</span>
+              </div>
             </div>
           </div>
 
-          <div
-            class="glass project-card fade-up"
-            style="transition-delay: 0.24s"
-          >
-            <span class="project-status status-concept"><i data-lucide="lightbulb"></i> Concept / R&D</span>
-            <div
-              class="project-accent"
-              style="background: linear-gradient(90deg, #a78bfa, #818cf8)"
-            ></div>
-            <h3 class="project-title">SaaS & Autres projets</h3>
-            <p class="project-desc">
-              Solutions de billetterie & guichet virtuel, applications de mise
-              en relation, prototypes SaaS orientés productivité & IA.
-            </p>
-            <div class="project-tags">
-              <span class="tag">SaaS</span><span class="tag">billetterie</span
-              ><span class="tag">IA</span><span class="tag">productivité</span>
+          <div class="project-item">
+            <div>
+              <div class="project-num">06</div>
+              <div class="project-name">X-Connect</div>
+              <div class="project-desc">
+                Peer-to-peer networking app for low-connectivity contexts —
+                profile exchange via QR code, instant contact sharing, hybrid
+                P2P + server sync. Built for meetups and events.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">P2P</span>
+                <span class="project-tag">React Native</span>
+                <span class="project-tag">Concept</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-item">
+            <div>
+              <div class="project-num">07</div>
+              <div class="project-name">Rustavel 🦀</div>
+              <div class="project-desc">
+                A Laravel-inspired Rust web framework — elegant syntax,
+                developer-friendly CLI, blazing-fast performance. Convention
+                over configuration.
+              </div>
+              <div class="project-tags">
+                <span class="project-tag">Rust</span>
+                <span class="project-tag">Open Source</span>
+                <span class="project-tag">Early stage</span>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div class="fade-up" style="transition-delay: 0.1s">
-          <div
-            class="section-tag"
-            style="margin-top: 48px; margin-bottom: 12px"
-          >
-            Production — live
-          </div>
-          <p
-            style="font-size: 0.88rem; color: var(--muted); margin-bottom: 16px"
-          >
-            Applications web livrées pour entreprises & particuliers :
-          </p>
-          <div class="sites-grid">
-            <a
-              href="https://www.geniusntech.com"
-              target="_blank"
-              class="site-link"
-              >geniusntech.com</a
-            >
-            <a href="https://www.coopewo.org" target="_blank" class="site-link"
-              >coopewo.org</a
-            >
-            <a
-              href="https://www.attron-cab.com"
-              target="_blank"
-              class="site-link"
-              >attron-cab.com</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══════════ STACK ═══════════ -->
-    <section id="stack">
-      <div class="container">
-        <div class="section-tag">Tech Stack</div>
-        <h2 class="section-title">Mon arsenal</h2>
-        <p class="section-subtitle">
-          Des outils choisis pour leur efficacité et leur adéquation aux
-          réalités du terrain.
-        </p>
-        <div class="stack-grid">
-          <div class="glass stack-card fade-up">
-            <i data-lucide="server" class="stack-icon"></i>
-            <div class="stack-category">Backend</div>
-            <div class="stack-title">Serveur & API</div>
+      <!-- STACK -->
+      <section id="stack">
+        <div class="section-label">Stack</div>
+        <div class="stack-grid reveal">
+          <div class="stack-cell">
+            <div class="stack-label">Backend</div>
             <div class="stack-items">
-              <span class="stack-item">PHP / Laravel</span>
-              <span class="stack-item">API REST</span>
-              <span class="stack-item">Auth & permissions</span>
-              <span class="stack-item">Architecture modulaire</span>
+              <strong>PHP · Laravel</strong><br />
+              AdonisJS<br />
+              REST APIs
             </div>
           </div>
-          <div class="glass stack-card fade-up" style="transition-delay: 0.08s">
-            <i data-lucide="palette" class="stack-icon"></i>
-            <div class="stack-category">Frontend</div>
-            <div class="stack-title">Interfaces</div>
+          <div class="stack-cell">
+            <div class="stack-label">Frontend</div>
             <div class="stack-items">
-              <span class="stack-item">React / React Native</span>
-              <span class="stack-item">Vue.js / Nuxt</span>
-              <span class="stack-item">Mobile-first UX</span>
-              <span class="stack-item">UI accessible</span>
+              <strong>React · React Native</strong><br />
+              Vue.js · Nuxt<br />
+              TailwindCSS
             </div>
           </div>
-          <div class="glass stack-card fade-up" style="transition-delay: 0.16s">
-            <i data-lucide="database" class="stack-icon"></i>
-            <div class="stack-category">Data & Outils</div>
-            <div class="stack-title">Infra & Plus</div>
+          <div class="stack-cell">
+            <div class="stack-label">Data & DevOps</div>
             <div class="stack-items">
-              <span class="stack-item">PostgreSQL / MySQL</span>
-              <span class="stack-item">Git / GitHub</span>
-              <span class="stack-item">Docker (bases)</span>
-              <span class="stack-item">ML & IA (en cours)</span>
+              <strong>PostgreSQL · MySQL</strong><br />
+              Docker · Git
+            </div>
+          </div>
+          <div class="stack-cell">
+            <div class="stack-label">Exploring</div>
+            <div class="stack-items">
+              <strong>Rust 🦀</strong><br />
+              AI Agents · LLMs<br />
+              Blockchain
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ═══════════ PHILOSOPHY ═══════════ -->
-    <section id="philosophy">
-      <div class="container">
-        <div class="section-tag">Philosophy</div>
-        <h2 class="section-title">Ce en quoi je crois</h2>
-        <div class="glass philosophy-card fade-up">
-          <span class="quote-mark">"</span>
-          <p class="quote-text">
-            Un bon produit ne commence pas par le code, mais par une frustration
-            réelle.
+      <!-- PHILOSOPHY -->
+      <section id="philosophy">
+        <div class="section-label">Philosophy</div>
+        <div class="reveal">
+          <p class="philosophy-quote">
+            "A good product doesn't start with code —<br />
+            it starts with a <em>real frustration</em>."
           </p>
-          <p
-            style="
-              font-family: &quot;JetBrains Mono&quot;, monospace;
-              font-size: 0.75rem;
-              color: var(--muted);
-            "
-          >
-            — Philosophie produit
-          </p>
-          <div class="values-grid">
-            <div class="value-item">
-              <i data-lucide="target" class="value-emoji"></i>
-              <div class="value-text">
-                <strong>Clarté avant complexité</strong>Un produit simple et
-                utile vaut mieux qu'un chef-d'œuvre incompris.
-              </div>
+          <div class="pillars">
+            <div class="pillar">
+              <span class="pillar-num">01</span>
+              <span><strong>Clarity</strong> over complexity</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="wrench" class="value-emoji"></i>
-              <div class="value-text">
-                <strong>Utilité avant la hype</strong>On ship quand ça résout un
-                problème, pas quand c'est à la mode.
-              </div>
+            <div class="pillar">
+              <span class="pillar-num">02</span>
+              <span><strong>Utility</strong> over hype</span>
             </div>
-            <div class="value-item">
-              <i data-lucide="globe" class="value-emoji"></i>
-              <div class="value-text">
-                <strong>Le terrain avant les slides</strong>La réalité du
-                terrain guide chaque décision produit.
-              </div>
+            <div class="pillar">
+              <span class="pillar-num">03</span>
+              <span><strong>Field</strong> over slides</span>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">04</span>
+              <span><strong>Always ship</strong> — iterate, pivot, repeat</span>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">05</span>
+              <span>Local impact, <strong>global standards</strong></span>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ═══════════ WHY ═══════════ -->
-    <section id="why">
-      <div class="container">
-        <div class="section-tag">Vision</div>
-        <h2 class="section-title">Pourquoi je construis</h2>
-        <div class="why-grid">
-          <div class="glass why-card fade-up">
-            <div class="why-item">
-              <div class="why-icon"><i data-lucide="link"></i></div>
-              <div class="why-text">
-                <strong>Reconnecter les communautés</strong>La tech peut tisser
-                des liens entre villages et diaspora, entre passé et futur.
-              </div>
-            </div>
-            <div class="why-item">
-              <div class="why-icon"><i data-lucide="home"></i></div>
-              <div class="why-text">
-                <strong>Produits modernes pour tous</strong>Les villages
-                africains ont aussi droit à des expériences digitales de
-                qualité.
-              </div>
-            </div>
-            <div class="why-item">
-              <div class="why-icon"><i data-lucide="globe-2"></i></div>
-              <div class="why-text">
-                <strong>Impact local, portée globale</strong>Ce qui résout un
-                problème local peut inspirer le monde entier.
-              </div>
-            </div>
+      <!-- NOW -->
+      <section id="now">
+        <div class="section-label">Currently</div>
+        <div class="now-list reveal">
+          <div class="now-item">
+            <span class="now-icon">🔨</span>
+            <span class="now-text"
+              ><strong>Abiaty Ma News</strong> — Laravel API + React Native,
+              Meilisearch cross-table search</span
+            >
           </div>
-
-          <div class="fade-up" style="transition-delay: 0.12s">
-            <div class="section-tag" style="margin-bottom: 16px">
-              En ce moment
-            </div>
-            <div class="now-grid">
-              <div class="glass now-item">
-                <div class="now-dot"></div>
-                <div class="now-text">
-                  <strong>Produits communautaires</strong>News & social en
-                  construction
-                </div>
-              </div>
-              <div class="glass now-item">
-                <div class="now-dot" style="background: var(--accent2)"></div>
-                <div class="now-text">
-                  <strong>Networking P2P</strong>Systèmes hybrides offline
-                </div>
-              </div>
-              <div class="glass now-item">
-                <div class="now-dot" style="background: #818cf8"></div>
-                <div class="now-text">
-                  <strong>IA & Data</strong>Montée en compétences active
-                </div>
-              </div>
-              <div class="glass now-item">
-                <div class="now-dot" style="background: #c084fc"></div>
-                <div class="now-text">
-                  <strong>Mode fondateur</strong>Activé <i data-lucide="rocket" style="display:inline;width:16px;height:16px;vertical-align:middle"></i>
-                </div>
-              </div>
-            </div>
-            <div style="margin-top: 20px">
-              <div class="section-tag" style="margin-bottom: 12px">
-                À côté du code
-              </div>
-              <div class="hobbies">
-                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
-                  ><i data-lucide="headphones" style="width:14px;height:14px;margin-right:4px"></i> Musique</span
-                >
-                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
-                  ><i data-lucide="gamepad-2" style="width:14px;height:14px;margin-right:4px"></i> Gaming</span
-                >
-                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
-                  ><i data-lucide="book-open" style="width:14px;height:14px;margin-right:4px"></i> Apprentissage</span
-                >
-                <span class="tag" style="font-size: 0.78rem; padding: 7px 13px"
-                  ><i data-lucide="code" style="width:14px;height:14px;margin-right:4px"></i> Tech</span
-                >
-              </div>
-            </div>
+          <div class="now-item">
+            <span class="now-icon">🦀</span>
+            <span class="now-text"
+              ><strong>Rust</strong> — blockchain internals, systems
+              programming, building Rustavel</span
+            >
+          </div>
+          <div class="now-item">
+            <span class="now-icon">🤖</span>
+            <span class="now-text"
+              ><strong>AI Agents</strong> — n8n + LangChain + FastAPI
+              orchestration</span
+            >
+          </div>
+          <div class="now-item">
+            <span class="now-icon">🧭</span>
+            <span class="now-text"
+              ><strong>Founder mode activated</strong> — building products that
+              matter for Africa</span
+            >
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ═══════════ CONTACT ═══════════ -->
-    <section id="contact">
-      <div class="container">
-        <div class="glass contact-card fade-up">
-          <div
-            class="section-tag"
-            style="justify-content: center; margin-bottom: 12px"
-          >
-            Contact
-          </div>
-          <h2
-            class="section-title"
-            style="font-size: clamp(1.6rem, 5vw, 2.6rem)"
-          >
-            Travaillons ensemble
-          </h2>
+      <!-- CONTACT -->
+      <section id="contact">
+        <div class="section-label">Contact</div>
+        <div class="reveal">
           <p
             style="
               color: var(--muted);
-              font-size: 0.95rem;
-              max-width: 460px;
-              margin: 0 auto;
-              line-height: 1.7;
+              font-size: 14px;
+              max-width: 420px;
+              margin-bottom: 0;
             "
           >
-            Freelance, co-création de produits, discussions tech & produit — je
-            suis là. On construit.
-            <strong style="color: var(--accent3)">Ensemble.</strong>
+            Open to freelance missions, product co-creation, and tech
+            discussions.
           </p>
-          <div class="contact-links">
+          <div class="contact-grid">
             <a
+              class="contact-item"
               href="https://www.linkedin.com/in/emmanuel-kacou-74397b247"
               target="_blank"
-              class="contact-btn c-linkedin"
-              ><i data-lucide="linkedin"></i> LinkedIn</a
             >
+              <div class="contact-platform">LinkedIn</div>
+              <div class="contact-value">emmanuel-kacou</div>
+            </a>
+            <a class="contact-item" href="mailto:kacouemmanuel225@yahoo.com">
+              <div class="contact-platform">Email</div>
+              <div class="contact-value">kacouemmanuel225@yahoo.com</div>
+            </a>
             <a
-              href="https://www.github.com/Leplusbio225"
-              target="_blank"
-              class="contact-btn c-github"
-              ><i data-lucide="github"></i> Github</a
-            >
-            <a
-              href="mailto:kacouemmanuel225@yahoo.com"
-              class="contact-btn c-email"
-              ><i data-lucide="mail"></i> Email</a
-            >
-            <a
+              class="contact-item"
               href="https://wa.me/2250757567142"
               target="_blank"
-              class="contact-btn c-whatsapp"
-              ><i data-lucide="message-circle"></i> WhatsApp</a
             >
+              <div class="contact-platform">WhatsApp</div>
+              <div class="contact-value">+225 07 57 56 71 42</div>
+            </a>
+            <a
+              class="contact-item"
+              href="https://wa.me/22501501449912"
+              target="_blank"
+            >
+              <div class="contact-platform">WhatsApp Pro</div>
+              <div class="contact-value">+225 01 50 14 99 12</div>
+            </a>
+            <a
+              class="contact-item"
+              href="https://github.com/manouthenerd"
+              target="_blank"
+            >
+              <div class="contact-platform">GitHub</div>
+              <div class="contact-value">@Leplusbio225</div>
+            </a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- ═══════════ FOOTER ═══════════ -->
     <footer>
-      <div class="container">
-        <div class="footer-logo">manouthenerd</div>
-        <div class="footer-sub">
-          KACOU EMMANUEL © 2026 — Côte d'Ivoire 🇨🇮 — Trust The Process
-        </div>
+      <div class="footer-left">Emmanuel Kacou · Abidjan, Côte d'Ivoire 🇨🇮</div>
+      <div class="footer-right">
+        🥷 Trust The Process &nbsp;·&nbsp; 🚀 Keep pushing &nbsp;·&nbsp; 👾
+        @manouthenerd
       </div>
     </footer>
 
-    <script src="script.js"></script>
- 
+    <script src="./script.js"></script>
   </body>
 </html>
